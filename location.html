@@ -228,6 +228,143 @@
       border-color: var(--neutral-30);
     }
 
+    /* View Toggle */
+    .view-toggle {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .view-toggle .btn {
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+
+    /* Location Card */
+    .location-card {
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .location-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    }
+
+    .location-card-img {
+      height: 160px;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .location-card-body {
+      padding: 16px;
+    }
+
+    .location-name {
+      font-weight: 700;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .location-address {
+      color: var(--neutral-100);
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .location-stats {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-value {
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--neutral-80);
+    }
+
+    .active-count {
+      color: var(--accent-green);
+    }
+
+    .inactive-count {
+      color: var(--accent-red);
+    }
+
+    .card-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    /* School List in Modal */
+    .school-item {
+      border-bottom: 1px solid var(--neutral-30);
+      padding: 12px 0;
+    }
+
+    .school-item:last-child {
+      border-bottom: none;
+    }
+
+    .school-name {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .school-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 14px;
+      color: var(--neutral-100);
+    }
+
+    .school-detail {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .school-banner {
+      height: 120px;
+      width: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-top: 12px;
+    }
+
+    .status-badge {
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-active {
+      background-color: rgba(16, 185, 129, 0.15);
+      color: var(--accent-green);
+    }
+
+    .status-inactive {
+      background-color: rgba(239, 68, 68, 0.15);
+      color: var(--accent-red);
+    }
+
     @media (max-width: 991px) {
       .sidebar { width: 200px; }
       .main-content { margin-left: 200px; }
@@ -237,6 +374,10 @@
       .sidebar { display: none; }
       .main-content { margin-left: 0; }
       .modal-dialog { margin: 10px; }
+      .location-stats {
+        flex-direction: column;
+        gap: 8px;
+      }
     }
   </style>
 </head>
@@ -245,38 +386,147 @@
   <!-- Sidebar -->
   <nav class="sidebar">
     <div class="brand">
-    <h5><img src="https://media.licdn.com/dms/image/v2/D4E16AQHWGrBJK4VrZg/profile-displaybackgroundimage-shrink_200_800/profile-displaybackgroundimage-shrink_200_800/0/1665939030505?e=2147483647&v=beta&t=imoZ7TxnaCF7bDHEJSI5b6oTIjVjo37ix5pkzZi2jAc" style="    width: 100%;"></h5>
+      <h5>Club Management</h5>
     </div>
     <ul class="nav flex-column">
       <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
       <li class="nav-item"><a class="nav-link active" href="location.html"><i class="bi bi-geo-alt"></i> Location Master</a></li>
       <li class="nav-item"><a class="nav-link" href="activity-master.html"><i class="bi bi-journal-text"></i> Activity Master</a></li>
       <li class="nav-item"><a class="nav-link" href="school.html"><i class="bi bi-building"></i> School Management</a></li>
-            <li class="nav-item"><a class="nav-link" href="school-subscription.html"><i class="bi bi-credit-card"></i> Subscriptions</a></li>
+      <li class="nav-item"><a class="nav-link" href="school-subscription.html"><i class="bi bi-credit-card"></i> Subscriptions</a></li>
       <li class="nav-item"><a class="nav-link" href="customer.html"><i class="bi bi-person"></i> Customers</a></li>
       <li class="nav-item"><a class="nav-link" href="booking.html"><i class="bi bi-calendar-check"></i> Bookings</a></li>
       <li class="nav-item"><a class="nav-link" href="Trainer.html"><i class="bi bi-person-badge"></i> Trainers</a></li>
       <li class="nav-item"><a class="nav-link" href="vol.html"><i class="bi bi-hand-index-thumb"></i> Volunteers</a></li>
       <li class="nav-item"><a class="nav-link" href="Attendance.html"><i class="bi bi-clipboard-check"></i> Attendance</a></li>
-       <li class="nav-item"><a class="nav-link" href="users.html"><i class="bi bi-people"></i> User Management</a></li>
-          <li class="nav-item"><a class="nav-link " href="issue-card.html"><i class="bi bi-exclamation-triangle"></i> Issue Card Management</a></li>
-                     <li class="nav-item"><a class="nav-link" href="Device.html"><i class="bi bi-fingerprint"></i> Device Management</a></li>
-                      <li class="nav-item"><a class="nav-link" href="report.html"><i class="bi bi-graph-up"></i> Financial Reports</a></li>
-                       <li class="nav-item"><a class="nav-link" href="item-request.html"><i class="bi bi-cart"></i> Stationary Requests</a></li>
+      <li class="nav-item"><a class="nav-link" href="users.html"><i class="bi bi-people"></i> User Management</a></li>
+      <li class="nav-item"><a class="nav-link" href="issue-card.html"><i class="bi bi-exclamation-triangle"></i> Issue Card Management</a></li>
+      <li class="nav-item"><a class="nav-link" href="Device.html"><i class="bi bi-fingerprint"></i> Device Management</a></li>
+      <li class="nav-item"><a class="nav-link" href="report.html"><i class="bi bi-graph-up"></i> Financial Reports</a></li>
+      <li class="nav-item"><a class="nav-link" href="item-request.html"><i class="bi bi-cart"></i> Stationary Requests</a></li>
     </ul>
   </nav>
 
   <!-- Main Content -->
   <main class="main-content">
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2 class="fw-bold" style="color: var(--neutral-160);font-size: 18px!important;" >Location Master</h2>
+      <h2 class="fw-bold" style="color: var(--neutral-160); font-size: 18px;">Location Master</h2>
       <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#locationModal">
         <i class="bi bi-plus-lg me-1"></i> Add Location
       </button>
     </div>
 
-    <!-- Locations Table -->
-    <div class="card">
+    <!-- View Toggle -->
+    <div class="view-toggle">
+      <button class="btn btn-outline-secondary active" id="cardViewBtn">
+        <i class="bi bi-grid-3x3-gap me-1"></i> Card View
+      </button>
+      <button class="btn btn-outline-secondary" id="tableViewBtn">
+        <i class="bi bi-list me-1"></i> Table View
+      </button>
+    </div>
+
+    <!-- Locations Card View -->
+    <div id="cardView" class="row">
+      <!-- Location Card 1 -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card location-card">
+          <img src="https://www.iacct.sa/wp-content/uploads/2022/09/Omrania_PIF_Riyadh_SaudiArabia_KSA_07about-saudi.jpg" class="location-card-img" alt="Central Park">
+          <div class="location-card-body">
+            <h5 class="location-name">Central Park</h5>
+            <p class="location-address">789 5th Ave, New York, NY 10021</p>
+            <div class="location-stats">
+              <div class="stat-item">
+                <span class="stat-value active-count">12</span>
+                <span class="stat-label">Active Schools</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value inactive-count">3</span>
+                <span class="stat-label">Inactive Schools</span>
+              </div>
+            </div>
+            <div class="card-actions">
+              <button class="action-btn" title="Edit" data-bs-toggle="modal" data-bs-target="#editLocationModal">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="action-btn delete" title="Delete">
+                <i class="bi bi-trash"></i>
+              </button>
+              <button class="action-btn" title="View Schools" data-bs-toggle="modal" data-bs-target="#schoolsModal" onclick="loadSchools('Central Park')">
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Location Card 2 -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card location-card">
+          <img src="https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2024/07/02/7ff700730fb346b34ff6d17f3dce990d_1000x1000.jpg" class="location-card-img" alt="Riverside Stadium">
+          <div class="location-card-body">
+            <h5 class="location-name">Riverside Stadium</h5>
+            <p class="location-address">123 Thames St, London, UK SE1</p>
+            <div class="location-stats">
+              <div class="stat-item">
+                <span class="stat-value active-count">8</span>
+                <span class="stat-label">Active Schools</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value inactive-count">1</span>
+                <span class="stat-label">Inactive Schools</span>
+              </div>
+            </div>
+            <div class="card-actions">
+              <button class="action-btn" title="Edit" data-bs-toggle="modal" data-bs-target="#editLocationModal">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="action-btn delete" title="Delete">
+                <i class="bi bi-trash"></i>
+              </button>
+              <button class="action-btn" title="View Schools" data-bs-toggle="modal" data-bs-target="#schoolsModal" onclick="loadSchools('Riverside Stadium')">
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Location Card 3 -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card location-card">
+          <img src="https://media.cnn.com/api/v1/images/stellar/prod/231006161801-01-body-saudi-arabia-tourism-basics-riyadh.jpg?c=original" class="location-card-img" alt="Golden Gate Park">
+          <div class="location-card-body">
+            <h5 class="location-name">Golden Gate Park</h5>
+            <p class="location-address">501 Stanyan St, San Francisco, CA 94117</p>
+            <div class="location-stats">
+              <div class="stat-item">
+                <span class="stat-value active-count">15</span>
+                <span class="stat-label">Active Schools</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value inactive-count">5</span>
+                <span class="stat-label">Inactive Schools</span>
+              </div>
+            </div>
+            <div class="card-actions">
+              <button class="action-btn" title="Edit" data-bs-toggle="modal" data-bs-target="#editLocationModal">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="action-btn delete" title="Delete">
+                <i class="bi bi-trash"></i>
+              </button>
+              <button class="action-btn" title="View Schools" data-bs-toggle="modal" data-bs-target="#schoolsModal" onclick="loadSchools('Golden Gate Park')">
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Locations Table View (Initially Hidden) -->
+    <div id="tableView" class="card d-none">
       <div class="table-responsive">
         <table class="table table-borderless mb-0">
           <thead>
@@ -285,6 +535,8 @@
               <th>LOCATION</th>
               <th>ADDRESS</th>
               <th>COORDINATES</th>
+              <th>ACTIVE SCHOOLS</th>
+              <th>INACTIVE SCHOOLS</th>
               <th class="text-end">ACTIONS</th>
             </tr>
           </thead>
@@ -294,9 +546,12 @@
               <td>New York, USA</td>
               <td>789 5th Ave, NY 10021</td>
               <td>40.7812°, -73.9665°</td>
+              <td><span class="status-active status-badge">12</span></td>
+              <td><span class="status-inactive status-badge">3</span></td>
               <td class="text-end">
-                <button class="action-btn" title="Edit"><i class="bi bi-pencil"></i></button>
+                <button class="action-btn" title="Edit" data-bs-toggle="modal" data-bs-target="#editLocationModal"><i class="bi bi-pencil"></i></button>
                 <button class="action-btn delete" title="Delete"><i class="bi bi-trash"></i></button>
+                <button class="action-btn" title="View Schools" data-bs-toggle="modal" data-bs-target="#schoolsModal" onclick="loadSchools('Central Park')"><i class="bi bi-eye"></i></button>
               </td>
             </tr>
             <tr>
@@ -304,9 +559,25 @@
               <td>London, UK</td>
               <td>123 Thames St, London SE1</td>
               <td>51.5074°, -0.1278°</td>
+              <td><span class="status-active status-badge">8</span></td>
+              <td><span class="status-inactive status-badge">1</span></td>
               <td class="text-end">
-                <button class="action-btn" title="Edit"><i class="bi bi-pencil"></i></button>
+                <button class="action-btn" title="Edit" data-bs-toggle="modal" data-bs-target="#editLocationModal"><i class="bi bi-pencil"></i></button>
                 <button class="action-btn delete" title="Delete"><i class="bi bi-trash"></i></button>
+                <button class="action-btn" title="View Schools" data-bs-toggle="modal" data-bs-target="#schoolsModal" onclick="loadSchools('Riverside Stadium')"><i class="bi bi-eye"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Golden Gate Park</strong></td>
+              <td>San Francisco, USA</td>
+              <td>501 Stanyan St, San Francisco, CA 94117</td>
+              <td>37.7694°, -122.4862°</td>
+              <td><span class="status-active status-badge">15</span></td>
+              <td><span class="status-inactive status-badge">5</span></td>
+              <td class="text-end">
+                <button class="action-btn" title="Edit" data-bs-toggle="modal" data-bs-target="#editLocationModal"><i class="bi bi-pencil"></i></button>
+                <button class="action-btn delete" title="Delete"><i class="bi bi-trash"></i></button>
+                <button class="action-btn" title="View Schools" data-bs-toggle="modal" data-bs-target="#schoolsModal" onclick="loadSchools('Golden Gate Park')"><i class="bi bi-eye"></i></button>
               </td>
             </tr>
           </tbody>
@@ -391,8 +662,130 @@
     </div>
   </div>
 
+  <!-- Edit Location Modal -->
+  <div class="modal fade" id="editLocationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Edit Location</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editLocationForm">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label">Name *</label>
+                  <input type="text" class="form-control" value="Central Park" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Location Name *</label>
+                  <input type="text" class="form-control" value="New York, USA" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Address *</label>
+                  <textarea class="form-control" rows="2" required>789 5th Ave, NY 10021</textarea>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Latitude</label>
+                      <input type="text" class="form-control" value="40.7812">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Longitude</label>
+                      <input type="text" class="form-control" value="-73.9665">
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Description</label>
+                  <textarea class="form-control" rows="3">A large public park in the heart of Manhattan.</textarea>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label">Location Image</label>
+                  <div class="image-upload-area" id="editDropArea">
+                    <i class="bi bi-cloud-upload fs-1 text-muted mb-2"></i>
+                    <p class="text-muted mb-0">Drag & drop or click to upload</p>
+                    <input type="file" class="d-none" id="editImageUpload" accept="image/*">
+                  </div>
+                  <div class="image-preview-container" id="editImagePreviewContainer" style="display: block;">
+                    <img id="editImagePreview" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Preview">
+                  </div>
+                  <div class="form-text text-muted">JPG/PNG, max 2MB</div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Map Preview</label>
+                  <div class="map-preview">
+                    <img id="editMapPreview" src="https://maps.googleapis.com/maps/api/staticmap?center=40.7812,-73.9665&zoom=14&size=400x180&markers=color:red%7C40.7812,-73.9665&key=YOUR_API_KEY" alt="Map">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" form="editLocationForm" class="btn btn-primary">Update Location</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Schools Modal -->
+  <div class="modal fade" id="schoolsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Schools at <span id="locationName">Central Park</span></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+              <h6 class="fw-bold mb-3">Active Schools (12)</h6>
+              <div id="activeSchoolsList">
+                <!-- Active schools will be loaded here -->
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h6 class="fw-bold mb-3">Inactive Schools (3)</h6>
+              <div id="inactiveSchoolsList">
+                <!-- Inactive schools will be loaded here -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    // View Toggle
+    document.getElementById('cardViewBtn').addEventListener('click', function() {
+      document.getElementById('cardView').classList.remove('d-none');
+      document.getElementById('tableView').classList.add('d-none');
+      this.classList.add('active');
+      document.getElementById('tableViewBtn').classList.remove('active');
+    });
+    
+    document.getElementById('tableViewBtn').addEventListener('click', function() {
+      document.getElementById('tableView').classList.remove('d-none');
+      document.getElementById('cardView').classList.add('d-none');
+      this.classList.add('active');
+      document.getElementById('cardViewBtn').classList.remove('active');
+    });
+
     // Image Upload
     const dropArea = document.getElementById('dropArea');
     const fileInput = document.getElementById('imageUpload');
@@ -446,6 +839,83 @@
 
     document.getElementById('latInput').addEventListener('input', updateMapPreview);
     document.getElementById('lngInput').addEventListener('input', updateMapPreview);
+
+    // Load schools for a location
+    function loadSchools(locationName) {
+      document.getElementById('locationName').textContent = locationName;
+      
+      // Clear previous content
+      document.getElementById('activeSchoolsList').innerHTML = '';
+      document.getElementById('inactiveSchoolsList').innerHTML = '';
+      
+      // Sample school data - in a real app this would come from an API
+      const schoolsData = {
+        'Central Park': {
+          active: [
+            { name: 'Manhattan High School', email: 'contact@manhattanhs.edu', address: '123 Broadway, New York, NY', banner: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8c1_W3Y_CQWqhoiJs0tYSEo2k7lpSsNAT4Q&s' },
+            { name: 'Park Avenue Academy', email: 'info@parkacademy.edu', address: '456 Park Ave, New York, NY', banner: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80' },
+            { name: 'Central Prep School', email: 'admin@centralprep.edu', address: '789 Central Park West, New York, NY', banner: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80' }
+          ],
+          inactive: [
+            { name: 'Downtown Learning Center', email: 'info@downtownlc.edu', address: '321 Downtown St, New York, NY', banner: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80' }
+          ]
+        },
+        'Riverside Stadium': {
+          active: [
+            { name: 'Thames International School', email: 'contact@thamesis.edu', address: '100 Thames St, London, UK', banner: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80' },
+            { name: 'London Academy', email: 'info@londonacademy.edu', address: '200 Oxford St, London, UK', banner: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80' }
+          ],
+          inactive: [
+            { name: 'East End School', email: 'admin@eest.edu', address: '50 East End Rd, London, UK', banner: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80' }
+          ]
+        },
+        'Golden Gate Park': {
+          active: [
+            { name: 'Bay Area High School', email: 'contact@bayareahs.edu', address: '1000 Golden Gate Ave, San Francisco, CA', banner: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80' },
+            { name: 'Pacific Coast Academy', email: 'info@pacificcoast.edu', address: '2000 Ocean Blvd, San Francisco, CA', banner: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80' },
+            { name: 'Golden Gate Prep', email: 'admin@goldengateprep.edu', address: '3000 Park Dr, San Francisco, CA', banner: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80' }
+          ],
+          inactive: [
+            { name: 'Marina District School', email: 'info@marinads.edu', address: '400 Marina Blvd, San Francisco, CA', banner: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80' }
+          ]
+        }
+      };
+      
+      const data = schoolsData[locationName] || { active: [], inactive: [] };
+      
+      // Populate active schools
+      data.active.forEach(school => {
+        const schoolElement = document.createElement('div');
+        schoolElement.className = 'school-item';
+        schoolElement.innerHTML = `
+          <div class="school-name">${school.name}</div>
+          <div class="school-details">
+            <div class="school-detail"><i class="bi bi-envelope"></i> ${school.email}</div>
+            <div class="school-detail"><i class="bi bi-geo-alt"></i> ${school.address}</div>
+          </div>
+          <img src="${school.banner}" class="school-banner" alt="${school.name}">
+        `;
+        document.getElementById('activeSchoolsList').appendChild(schoolElement);
+      });
+      
+      // Populate inactive schools
+      data.inactive.forEach(school => {
+        const schoolElement = document.createElement('div');
+        schoolElement.className = 'school-item';
+        schoolElement.innerHTML = `
+          <div class="school-name">${school.name}</div>
+          <div class="school-details">
+            <div class="school-detail"><i class="bi bi-envelope"></i> ${school.email}</div>
+            <div class="school-detail"><i class="bi bi-geo-alt"></i> ${school.address}</div>
+          </div>
+          <img src="${school.banner}" class="school-banner" alt="${school.name}">
+        `;
+        document.getElementById('inactiveSchoolsList').appendChild(schoolElement);
+      });
+    }
+    
+    // Initialize with first location data
+    loadSchools('Central Park');
   </script>
 </body>
 </html>
