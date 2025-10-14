@@ -1,0 +1,571 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Greenwood High School | Time Slot Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root {
+      --neutral-0: #ffffff;
+      --neutral-10: #f8fafc;
+      --neutral-20: #f1f5f9;
+      --neutral-30: #e2e8f0;
+      --neutral-40: #cbd5e1;
+      --neutral-60: #94a3b8;
+      --neutral-80: #64748b;
+      --neutral-100: #475569;
+      --neutral-120: #334155;
+      --neutral-140: #1e293b;
+      --neutral-160: #0f172a;
+
+      --accent-blue: #3b82f6;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --accent-orange: #f59e0b;
+      --accent-purple: #8b5cf6;
+      --accent-indigo: #6366f1;
+
+      --card-gradient: linear-gradient(160deg, rgba(255,255,255,0.95), rgba(248, 250, 252, 0.98));
+    }
+
+    body {
+      background-color: var(--neutral-10);
+      color: var(--neutral-140);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      background: var(--neutral-0);
+      border-right: 1px solid var(--neutral-30);
+      min-height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 240px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .sidebar .brand {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--neutral-30);
+    }
+
+    .sidebar .brand img {
+      width: 100%;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .sidebar .nav-link {
+      color: var(--neutral-100);
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .sidebar .nav-link:hover,
+    .sidebar .nav-link.active {
+      background: rgba(59, 130, 246, 0.06);
+      color: var(--accent-blue);
+      border-left: 3px solid var(--accent-blue);
+      padding-left: 21px;
+    }
+
+    .sidebar .nav-link i {
+      width: 20px;
+      margin-right: 12px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .main-content {
+      margin-left: 240px;
+      padding: 24px;
+    }
+
+    .school-header {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-indigo));
+      color: white;
+      padding: 24px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
+    }
+
+    .school-header h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .school-header p {
+      opacity: 0.9;
+      margin: 0;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--neutral-30);
+      padding-bottom: 16px;
+    }
+
+    .tab-btn {
+      padding: 10px 20px;
+      border: none;
+      background: transparent;
+      color: var(--neutral-100);
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      background: var(--neutral-20);
+    }
+
+    .tab-btn.active {
+      background: var(--accent-blue);
+      color: white;
+    }
+
+    .time-slot-card {
+      background: var(--card-gradient);
+      border: 1px solid var(--neutral-30);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+      transition: transform 0.2s ease;
+    }
+
+    .time-slot-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    }
+
+    .day-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--neutral-30);
+    }
+
+    .day-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--neutral-160);
+    }
+
+    .time-slot-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      background: var(--neutral-20);
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+
+    .time-range {
+      font-weight: 600;
+      color: var(--accent-blue);
+    }
+
+    .holiday-card {
+      background: var(--card-gradient);
+      border: 1px solid var(--neutral-30);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+    }
+
+    .holiday-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--neutral-30);
+    }
+
+    .holiday-item:last-child {
+      border-bottom: none;
+    }
+
+    .holiday-date {
+      font-weight: 600;
+      color: var(--accent-red);
+    }
+
+    .holiday-name {
+      color: var(--neutral-140);
+    }
+
+    .action-btn {
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      border-radius: 6px;
+      color: var(--neutral-80);
+      background: transparent;
+      border: none;
+    }
+
+    .action-btn:hover {
+      background: var(--neutral-20);
+      color: var(--accent-blue);
+    }
+
+    .action-btn.delete:hover {
+      color: var(--accent-red);
+    }
+
+    .modal-content {
+      border-radius: 12px;
+      border: 1px solid var(--neutral-30);
+    }
+
+    .modal-header, .modal-footer {
+      border-color: var(--neutral-30);
+    }
+
+    .form-label {
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--neutral-100);
+      margin-bottom: 8px;
+    }
+
+    .form-control, .form-select {
+      border: 1px solid var(--neutral-30);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    .btn-primary {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      padding: 10px 20px;
+      font-weight: 600;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 991px) {
+      .sidebar { width: 200px; }
+      .main-content { margin-left: 200px; }
+    }
+
+    @media (max-width: 767px) {
+      .sidebar { display: none; }
+      .main-content { margin-left: 0; }
+      .tabs { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="brand">
+      <img src="https://media.licdn.com/dms/image/v2/D4E16AQHWGrBJK4VrZg/profile-displaybackgroundimage-shrink_200_800/profile-displaybackgroundimage-shrink_200_800/0/1665939030505?e=2147483647&v=beta&t=imoZ7TxnaCF7bDHEJSI5b6oTIjVjo37ix5pkzZi2jAc" alt="Club Logo">
+    </div>
+    <ul class="nav flex-column">
+      <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+      <li class="nav-item"><a class="nav-link" href="location.html"><i class="bi bi-geo-alt"></i> Location Master</a></li>
+      <li class="nav-item"><a class="nav-link" href="activity-master.html"><i class="bi bi-journal-text"></i> Activity Master</a></li>
+      <li class="nav-item"><a class="nav-link" href="school.html"><i class="bi bi-building"></i> School Management</a></li>
+      <li class="nav-item"><a class="nav-link active" href="shool-time.html"><i class="bi bi-clock"></i> Time Slot Management</a></li>
+      <li class="nav-item"><a class="nav-link" href="school-subscription.html"><i class="bi bi-credit-card"></i> Subscriptions</a></li>
+      <li class="nav-item"><a class="nav-link" href="customer.html"><i class="bi bi-person"></i> Customers</a></li>
+      <li class="nav-item"><a class="nav-link" href="booking.html"><i class="bi bi-calendar-check"></i> Bookings</a></li>
+      <li class="nav-item"><a class="nav-link" href="Trainer.html"><i class="bi bi-person-badge"></i> Trainers</a></li>
+      <li class="nav-item"><a class="nav-link" href="vol.html"><i class="bi bi-hand-index-thumb"></i> Volunteers</a></li>
+       <li class="nav-item"><a class="nav-link" href="users.html"><i class="bi bi-people"></i> User Management</a></li>
+          <li class="nav-item"><a class="nav-link " href="#"><i class="bi bi-exclamation-triangle"></i> Issue Card Management</a></li>
+                     <li class="nav-item"><a class="nav-link" href="Device.html"><i class="bi bi-fingerprint"></i> Device Management</a></li>
+                      <li class="nav-item"><a class="nav-link" href="report.html"><i class="bi bi-graph-up"></i> Financial Reports</a></li>
+                       <li class="nav-item"><a class="nav-link" href="item-request.html"><i class="bi bi-cart"></i> Stationary Requests</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- School Header -->
+    <div class="school-header">
+      <h1>Greenwood High School</h1>
+      <p>Time Slot & Holiday Management</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="time-slots">Time Slots</button>
+      <button class="tab-btn" data-tab="holidays">Holidays</button>
+    </div>
+
+    <!-- Time Slots Section -->
+    <div id="timeSlotsSection">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold" style="color: var(--neutral-160);">Weekly Time Slots</h3>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#timeSlotModal">
+          <i class="bi bi-plus-lg me-1"></i> Add Time Slot
+        </button>
+      </div>
+
+      <!-- Monday -->
+      <div class="time-slot-card">
+        <div class="day-header">
+          <div class="day-name">Monday</div>
+          <span class="text-muted">3 slots</span>
+        </div>
+        <div class="time-slot-item">
+          <div class="time-range">09:00 AM - 11:00 AM</div>
+          <div>
+            <button class="action-btn" title="Edit"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn delete" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </div>
+        <div class="time-slot-item">
+          <div class="time-range">02:00 PM - 04:00 PM</div>
+          <div>
+            <button class="action-btn" title="Edit"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn delete" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </div>
+        <div class="time-slot-item">
+          <div class="time-range">06:00 PM - 08:00 PM</div>
+          <div>
+            <button class="action-btn" title="Edit"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn delete" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tuesday -->
+      <div class="time-slot-card">
+        <div class="day-header">
+          <div class="day-name">Tuesday</div>
+          <span class="text-muted">2 slots</span>
+        </div>
+        <div class="time-slot-item">
+          <div class="time-range">10:00 AM - 12:00 PM</div>
+          <div>
+            <button class="action-btn" title="Edit"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn delete" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </div>
+        <div class="time-slot-item">
+          <div class="time-range">03:00 PM - 05:00 PM</div>
+          <div>
+            <button class="action-btn" title="Edit"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn delete" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wednesday -->
+      <div class="time-slot-card">
+        <div class="day-header">
+          <div class="day-name">Wednesday</div>
+          <span class="text-muted">No slots</span>
+        </div>
+        <div class="text-center text-muted py-4">
+          <i class="bi bi-clock fs-1 mb-2"></i>
+          <p>No time slots configured for Wednesday</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Holidays Section (Hidden by default) -->
+    <div id="holidaysSection" style="display: none;">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold" style="color: var(--neutral-160);">Holiday Management</h3>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#holidayModal">
+          <i class="bi bi-plus-lg me-1"></i> Add Holiday
+        </button>
+      </div>
+
+      <div class="holiday-card">
+        <div class="holiday-item">
+          <div>
+            <div class="holiday-date">Jan 1, 2024</div>
+            <div class="holiday-name">New Year's Day</div>
+          </div>
+          <div>
+            <button class="action-btn" title="Edit"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn delete" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </div>
+        <div class="holiday-item">
+          <div>
+            <div class="holiday-date">Dec 25, 2024</div>
+            <div class="holiday-name">Christmas Day</div>
+          </div>
+          <div>
+            <button class="action-btn" title="Edit"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn delete" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </div>
+        <div class="holiday-item">
+          <div>
+            <div class="holiday-date">Jul 4, 2024</div>
+            <div class="holiday-name">Independence Day</div>
+          </div>
+          <div>
+            <button class="action-btn" title="Edit"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn delete" title="Delete"><i class="bi bi-trash"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Time Slot Modal -->
+  <div class="modal fade" id="timeSlotModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Add Time Slot</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="timeSlotForm">
+            <div class="mb-3">
+              <label class="form-label">Day of Week *</label>
+              <select class="form-select" required>
+                <option value="">Select day</option>
+                <option value="monday">Monday</option>
+                <option value="tuesday">Tuesday</option>
+                <option value="wednesday">Wednesday</option>
+                <option value="thursday">Thursday</option>
+                <option value="friday">Friday</option>
+                <option value="saturday">Saturday</option>
+                <option value="sunday">Sunday</option>
+              </select>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Start Time *</label>
+                  <input type="time" class="form-control" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">End Time *</label>
+                  <input type="time" class="form-control" required>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Activity (Optional)</label>
+              <select class="form-select">
+                <option value="">All Activities</option>
+                <option value="football">Football</option>
+                <option value="basketball">Basketball</option>
+                <option value="swimming">Swimming</option>
+                <option value="chess">Chess</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" form="timeSlotForm" class="btn btn-primary">Save Time Slot</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Holiday Modal -->
+  <div class="modal fade" id="holidayModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Add Holiday</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="holidayForm">
+            <div class="mb-3">
+              <label class="form-label">Holiday Date *</label>
+              <input type="date" class="form-control" required>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Holiday Name *</label>
+              <input type="text" class="form-control" placeholder="Enter holiday name" required>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Description</label>
+              <textarea class="form-control" rows="2" placeholder="Optional description"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" form="holidayForm" class="btn btn-primary">Save Holiday</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        // Remove active class from all buttons
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        // Add active class to clicked button
+        this.classList.add('active');
+        
+        // Show corresponding section
+        const tab = this.getAttribute('data-tab');
+        document.getElementById('timeSlotsSection').style.display = tab === 'time-slots' ? 'block' : 'none';
+        document.getElementById('holidaysSection').style.display = tab === 'holidays' ? 'block' : 'none';
+      });
+    });
+
+    // Form submissions
+    document.getElementById('timeSlotForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Time slot added successfully!');
+      const modal = bootstrap.Modal.getInstance(document.getElementById('timeSlotModal'));
+      modal.hide();
+      this.reset();
+    });
+
+    document.getElementById('holidayForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Holiday added successfully!');
+      const modal = bootstrap.Modal.getInstance(document.getElementById('holidayModal'));
+      modal.hide();
+      this.reset();
+    });
+  </script>
+</body>
+</html>
+```

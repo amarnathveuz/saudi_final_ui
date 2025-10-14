@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manage Activity Restrictions | Club Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root {
+      --neutral-0: #ffffff;
+      --neutral-10: #f8fafc;
+      --neutral-20: #f1f5f9;
+      --neutral-30: #e2e8f0;
+      --neutral-40: #cbd5e1;
+      --neutral-60: #94a3b8;
+      --neutral-80: #64748b;
+      --neutral-100: #475569;
+      --neutral-120: #334155;
+      --neutral-140: #1e293b;
+      --neutral-160: #0f172a;
+
+      --accent-blue: #3b82f6;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --accent-orange: #f59e0b;
+      --accent-purple: #8b5cf6;
+
+      --card-gradient: linear-gradient(160deg, rgba(255,255,255,0.95), rgba(248, 250, 252, 0.98));
+    }
+
+    body {
+      background-color: var(--neutral-10);
+      color: var(--neutral-140);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      background: var(--neutral-0);
+      border-right: 1px solid var(--neutral-30);
+      min-height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 240px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .sidebar .brand {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--neutral-30);
+    }
+
+    .sidebar .brand img {
+      width: 100%;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .sidebar .nav-link {
+      color: var(--neutral-100);
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .sidebar .nav-link:hover,
+    .sidebar .nav-link.active {
+      background: rgba(59, 130, 246, 0.06);
+      color: var(--accent-blue);
+      border-left: 3px solid var(--accent-blue);
+      padding-left: 21px;
+    }
+
+    .sidebar .nav-link i {
+      width: 20px;
+      margin-right: 12px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .main-content {
+      margin-left: 240px;
+      padding: 24px;
+    }
+
+    .card {
+      background: var(--card-gradient);
+      border: 1px solid var(--neutral-30);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    }
+
+    .form-label {
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--neutral-100);
+      margin-bottom: 8px;
+    }
+
+    .form-control, .form-select, .form-check-input {
+      border: 1px solid var(--neutral-30);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    .btn-primary {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      padding: 10px 20px;
+      font-weight: 600;
+      border-radius: 8px;
+    }
+
+    .btn-outline-secondary {
+      border-color: var(--neutral-30);
+      color: var(--neutral-100);
+    }
+
+    .activity-card-header {
+      display: flex;
+      align-items-center;
+      margin-bottom: 16px;
+    }
+
+    .activity-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 16px;
+      font-size: 24px;
+      color: white;
+    }
+
+    .activity-info h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--neutral-160);
+      margin: 0 0 4px 0;
+    }
+
+    .activity-info p {
+      font-size: 13px;
+      color: var(--neutral-100);
+      margin: 0;
+    }
+
+    .restriction-info {
+      background: var(--neutral-20);
+      padding: 12px;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+
+    .restriction-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--neutral-100);
+      margin-bottom: 4px;
+    }
+
+    .restriction-value {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--neutral-140);
+    }
+
+    .gender-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 12px;
+    }
+
+    .gender-male { background: rgba(34, 197, 94, 0.1); color: #16a34a; }
+    .gender-female { background: rgba(236, 72, 153, 0.1); color: #be185d; }
+    .gender-unisex { background: rgba(139, 92, 246, 0.1); color: #7c3aed; }
+    .gender-male-female { background: rgba(251, 191, 36, 0.1); color: #ca8a04; }
+
+    .modal-content {
+      border-radius: 12px;
+      border: 1px solid var(--neutral-30);
+    }
+
+    .modal-header, .modal-footer {
+      border-color: var(--neutral-30);
+    }
+
+    @media (max-width: 991px) {
+      .sidebar { width: 200px; }
+      .main-content { margin-left: 200px; }
+    }
+
+    @media (max-width: 767px) {
+      .sidebar { display: none; }
+      .main-content { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="brand">
+      <img src="https://media.licdn.com/dms/image/v2/D4E16AQHWGrBJK4VrZg/profile-displaybackgroundimage-shrink_200_800/profile-displaybackgroundimage-shrink_200_800/0/1665939030505?e=2147483647&v=beta&t=imoZ7TxnaCF7bDHEJSI5b6oTIjVjo37ix5pkzZi2jAc" alt="Club Logo">
+    </div>
+    <ul class="nav flex-column">
+      <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+      <li class="nav-item"><a class="nav-link" href="location.html"><i class="bi bi-geo-alt"></i> Location Master</a></li>
+      <li class="nav-item"><a class="nav-link" href="activity-master.html"><i class="bi bi-journal-text"></i> Activity Master</a></li>
+      <li class="nav-item"><a class="nav-link" href="school-management.html"><i class="bi bi-building"></i> School Management</a></li>
+      <li class="nav-item"><a class="nav-link" href="school-subscription.html"><i class="bi bi-credit-card"></i> Subscriptions</a></li>
+      <li class="nav-item"><a class="nav-link" href="customer.html"><i class="bi bi-person"></i> Customers</a></li>
+      <li class="nav-item"><a class="nav-link" href="booking.html"><i class="bi bi-calendar-check"></i> Bookings</a></li>
+      <li class="nav-item"><a class="nav-link" href="Trainer.html"><i class="bi bi-person-badge"></i> Trainers</a></li>
+      <li class="nav-item"><a class="nav-link" href="vol.html"><i class="bi bi-hand-index-thumb"></i> Volunteers</a></li>
+      <li class="nav-item"><a class="nav-link active" href="#"><i class="bi bi-lock"></i> Activity Restrictions</a></li>
+       <li class="nav-item"><a class="nav-link" href="users.html"><i class="bi bi-people"></i> User Management</a></li>
+          <li class="nav-item"><a class="nav-link " href="#"><i class="bi bi-exclamation-triangle"></i> Issue Card Management</a></li>
+                     <li class="nav-item"><a class="nav-link" href="Device.html"><i class="bi bi-fingerprint"></i> Device Management</a></li>
+                      <li class="nav-item"><a class="nav-link" href="report.html"><i class="bi bi-graph-up"></i> Financial Reports</a></li>
+                       <li class="nav-item"><a class="nav-link" href="item-request.html"><i class="bi bi-cart"></i> Stationary Requests</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="fw-bold" style="color: var(--neutral-160); font-size: 18px!important;">Manage Activity Restrictions</h2>
+    </div>
+
+    <!-- Activities Grid -->
+    <div class="row g-4">
+      <!-- Football Activity Card -->
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card">
+          <div class="activity-card-header">
+            <div class="activity-icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+                <i class="bi bi-heart-pulse"></i>
+            </div>
+            <div class="activity-info">
+              <h3>Football</h3>
+              <p>Team sport played with a spherical ball</p>
+            </div>
+          </div>
+          
+          <div class="restriction-info">
+            <div class="restriction-label">Gender Restriction</div>
+            <div class="restriction-value">
+              <span class="gender-badge gender-unisex">Unisex</span>
+            </div>
+          </div>
+          
+          <div class="restriction-info">
+            <div class="restriction-label">Child Access</div>
+            <div class="restriction-value">Yes (Ages 6-17)</div>
+          </div>
+          
+          <button class="btn btn-primary w-100 mt-3" data-bs-toggle="modal" data-bs-target="#restrictionModal" data-activity="Football">
+            <i class="bi bi-gear me-2"></i>Manage Restrictions
+          </button>
+        </div>
+      </div>
+
+      <!-- Basketball Activity Card -->
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card">
+          <div class="activity-card-header">
+            <div class="activity-icon" style="background: linear-gradient(135deg, #ef4444, #b91c1c);">
+               <i class="bi bi-water"></i>
+            </div>
+            <div class="activity-info">
+              <h3>Basketball</h3>
+              <p>Team sport where players score by shooting a ball</p>
+            </div>
+          </div>
+          
+          <div class="restriction-info">
+            <div class="restriction-label">Gender Restriction</div>
+            <div class="restriction-value">
+              <span class="gender-badge gender-male">Male Only</span>
+            </div>
+          </div>
+          
+          <div class="restriction-info">
+            <div class="restriction-label">Child Access</div>
+            <div class="restriction-value">No</div>
+          </div>
+          
+          <button class="btn btn-primary w-100 mt-3" data-bs-toggle="modal" data-bs-target="#restrictionModal" data-activity="Basketball">
+            <i class="bi bi-gear me-2"></i>Manage Restrictions
+          </button>
+        </div>
+      </div>
+
+      <!-- Chess Activity Card -->
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card">
+          <div class="activity-card-header">
+            <div class="activity-icon" style="background: linear-gradient(135deg, #10b981, #047857);">
+              <i class="bi bi-award"></i>
+            </div>
+            <div class="activity-info">
+              <h3>Chess</h3>
+              <p>Strategic board game for two players</p>
+            </div>
+          </div>
+          
+          <div class="restriction-info">
+            <div class="restriction-label">Gender Restriction</div>
+            <div class="restriction-value">
+              <span class="gender-badge gender-female">Female Only</span>
+            </div>
+          </div>
+          
+          <div class="restriction-info">
+            <div class="restriction-label">Child Access</div>
+            <div class="restriction-value">Yes (Ages 8-17)</div>
+          </div>
+          
+          <button class="btn btn-primary w-100 mt-3" data-bs-toggle="modal" data-bs-target="#restrictionModal" data-activity="Chess">
+            <i class="bi bi-gear me-2"></i>Manage Restrictions
+          </button>
+        </div>
+      </div>
+
+      <!-- Swimming Activity Card -->
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card">
+          <div class="activity-card-header">
+            <div class="activity-icon" style="background: linear-gradient(135deg, #f59e0b, #b45309);">
+              <i class="bi bi-water"></i>
+            </div>
+            <div class="activity-info">
+              <h3>Swimming</h3>
+              <p>Aquatic sport involving propulsion through water</p>
+            </div>
+          </div>
+          
+          <div class="restriction-info">
+            <div class="restriction-label">Gender Restriction</div>
+            <div class="restriction-value">
+              <span class="gender-badge gender-male-female">Male & Female</span>
+            </div>
+          </div>
+          
+          <div class="restriction-info">
+            <div class="restriction-label">Child Access</div>
+            <div class="restriction-value">Yes (Ages 5-17)</div>
+          </div>
+          
+          <button class="btn btn-primary w-100 mt-3" data-bs-toggle="modal" data-bs-target="#restrictionModal" data-activity="Swimming">
+            <i class="bi bi-gear me-2"></i>Manage Restrictions
+          </button>
+        </div>
+      </div>
+
+      <!-- Tennis Activity Card -->
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card">
+          <div class="activity-card-header">
+            <div class="activity-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+              <i class="bi bi-emoji-smile"></i>
+            </div>
+            <div class="activity-info">
+              <h3>Tennis</h3>
+              <p>Racket sport played individually or between two teams</p>
+            </div>
+          </div>
+          
+          <div class="restriction-info">
+            <div class="restriction-label">Gender Restriction</div>
+            <div class="restriction-value">
+              <span class="gender-badge gender-unisex">Unisex</span>
+            </div>
+          </div>
+          
+          <div class="restriction-info">
+            <div class="restriction-label">Child Access</div>
+            <div class="restriction-value">Yes (Ages 7-17)</div>
+          </div>
+          
+          <button class="btn btn-primary w-100 mt-3" data-bs-toggle="modal" data-bs-target="#restrictionModal" data-activity="Tennis">
+            <i class="bi bi-gear me-2"></i>Manage Restrictions
+          </button>
+        </div>
+      </div>
+
+      <!-- Yoga Activity Card -->
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card">
+          <div class="activity-card-header">
+            <div class="activity-icon" style="background: linear-gradient(135deg, #ec4899, #be185d);">
+              <i class="bi bi-heart-pulse"></i>
+            </div>
+            <div class="activity-info">
+              <h3>Yoga</h3>
+              <p>Physical, mental, and spiritual practices</p>
+            </div>
+          </div>
+          
+          <div class="restriction-info">
+            <div class="restriction-label">Gender Restriction</div>
+            <div class="restriction-value">
+              <span class="gender-badge gender-female">Female Only</span>
+            </div>
+          </div>
+          
+          <div class="restriction-info">
+            <div class="restriction-label">Child Access</div>
+            <div class="restriction-value">No</div>
+          </div>
+          
+          <button class="btn btn-primary w-100 mt-3" data-bs-toggle="modal" data-bs-target="#restrictionModal" data-activity="Yoga">
+            <i class="bi bi-gear me-2"></i>Manage Restrictions
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Restriction Modal -->
+  <div class="modal fade" id="restrictionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Manage Activity Restrictions - <span id="modalActivityName">Activity</span></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="restrictionForm">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label">Gender Restriction *</label>
+                  <select class="form-select" id="genderRestriction" required>
+                    <option value="">Select gender restriction</option>
+                    <option value="male">Male Only</option>
+                    <option value="female">Female Only</option>
+                    <option value="unisex">Unisex</option>
+                    <option value="male_female">Male & Female (Separate Sessions)</option>
+                  </select>
+                </div>
+                
+                <div class="mb-3">
+                  <label class="form-label">Child Access</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="childAccess" id="childAccessYes" value="yes">
+                    <label class="form-check-label" for="childAccessYes">Yes</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="childAccess" id="childAccessNo" value="no" checked>
+                    <label class="form-check-label" for="childAccessNo">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div id="childAgeGroup" style="display: none;">
+                  <div class="mb-3">
+                    <label class="form-label">Minimum Age</label>
+                    <input type="number" class="form-control" min="0" max="17" placeholder="Enter minimum age" value="6">
+                  </div>
+                  
+                  <div class="mb-3">
+                    <label class="form-label">Maximum Age</label>
+                    <input type="number" class="form-control" min="0" max="17" placeholder="Enter maximum age" value="17">
+                  </div>
+                  
+                  <div class="mb-3">
+                    <label class="form-label">Age Description</label>
+                    <textarea class="form-control" rows="2" placeholder="Describe age requirements or restrictions">Suitable for children aged 6-17 years</textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" form="restrictionForm" class="btn btn-primary">Save Restrictions</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Handle modal opening and set activity name
+    const restrictionModal = document.getElementById('restrictionModal');
+    restrictionModal.addEventListener('show.bs.modal', function (event) {
+      const button = event.relatedTarget;
+      const activityName = button.getAttribute('data-activity');
+      const modalTitle = restrictionModal.querySelector('#modalActivityName');
+      modalTitle.textContent = activityName;
+      
+      // Reset form to default values
+      document.getElementById('restrictionForm').reset();
+      document.getElementById('childAgeGroup').style.display = 'none';
+      document.getElementById('childAccessNo').checked = true;
+    });
+
+    // Handle child access toggle
+    const childAccessYes = document.getElementById('childAccessYes');
+    const childAccessNo = document.getElementById('childAccessNo');
+    const childAgeGroup = document.getElementById('childAgeGroup');
+    
+    childAccessYes.addEventListener('change', function() {
+      if (this.checked) {
+        childAgeGroup.style.display = 'block';
+      }
+    });
+    
+    childAccessNo.addEventListener('change', function() {
+      if (this.checked) {
+        childAgeGroup.style.display = 'none';
+      }
+    });
+
+    // Form submission
+    document.getElementById('restrictionForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Get form values
+      const formData = new FormData(this);
+      const restrictionData = {
+        activity: document.getElementById('modalActivityName').textContent,
+        genderRestriction: formData.get('genderRestriction'),
+        childAccess: formData.get('childAccess')
+      };
+      
+      if (restrictionData.childAccess === 'yes') {
+        restrictionData.minAge = this.querySelector('input[placeholder="Enter minimum age"]').value;
+        restrictionData.maxAge = this.querySelector('input[placeholder="Enter maximum age"]').value;
+        restrictionData.ageDescription = this.querySelector('textarea').value;
+      }
+      
+      console.log('Restriction Data:', restrictionData);
+      
+      // Close modal
+      const modal = bootstrap.Modal.getInstance(restrictionModal);
+      modal.hide();
+      
+      // In a real app, you would send this data to your backend
+      alert('Activity restrictions updated successfully!');
+    });
+  </script>
+</body>
+</html>

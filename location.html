@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Location Master | Club Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root {
+      /* Your exact color scheme */
+      --neutral-0: #ffffff;
+      --neutral-10: #f8fafc;
+      --neutral-20: #f1f5f9;
+      --neutral-30: #e2e8f0;
+      --neutral-40: #cbd5e1;
+      --neutral-60: #94a3b8;
+      --neutral-80: #64748b;
+      --neutral-100: #475569;
+      --neutral-120: #334155;
+      --neutral-140: #1e293b;
+      --neutral-160: #0f172a;
+
+      --accent-blue: #3b82f6;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --accent-orange: #f59e0b;
+
+      --card-gradient: linear-gradient(160deg, rgba(255,255,255,0.95), rgba(248, 250, 252, 0.98));
+    }
+
+    body {
+      background-color: var(--neutral-10);
+      color: var(--neutral-140);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      background: var(--neutral-0);
+      border-right: 1px solid var(--neutral-30);
+      min-height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 240px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .sidebar .brand {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--neutral-30);
+    }
+
+    .sidebar .brand h5 {
+      font-weight: 700;
+      color: var(--neutral-160);
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .sidebar .nav-link {
+      color: var(--neutral-100);
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .sidebar .nav-link:hover,
+    .sidebar .nav-link.active {
+      background: rgba(59, 130, 246, 0.06);
+      color: var(--accent-blue);
+      border-left: 3px solid var(--accent-blue);
+      padding-left: 21px;
+    }
+
+    .sidebar .nav-link i {
+      width: 20px;
+      margin-right: 12px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .main-content {
+      margin-left: 240px;
+      padding: 24px;
+    }
+
+    /* Card */
+    .card {
+      background: var(--card-gradient);
+      border: 1px solid var(--neutral-30);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+      border-color: var(--neutral-40);
+    }
+
+    .form-label {
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--neutral-100);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .form-control, .form-select {
+      border: 1px solid var(--neutral-30);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    .btn-primary {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      padding: 10px 20px;
+      font-weight: 600;
+      border-radius: 8px;
+    }
+
+    .btn-outline-secondary {
+      border-radius: 8px;
+    }
+
+    /* Table */
+    .table th {
+      font-weight: 700;
+      color: var(--neutral-100);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .table td {
+      font-weight: 500;
+      padding: 16px 0;
+    }
+
+    .action-btn {
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      border-radius: 8px;
+      color: var(--neutral-80);
+      background: transparent;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+      background: var(--neutral-20);
+      color: var(--accent-blue);
+    }
+
+    .action-btn.delete:hover {
+      color: var(--accent-red);
+    }
+
+    /* Image Upload */
+    .image-upload-area {
+      border: 2px dashed var(--neutral-30);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: rgba(248, 250, 252, 0.7);
+    }
+
+    .image-upload-area:hover {
+      border-color: var(--accent-blue);
+      background: rgba(59, 130, 246, 0.05);
+    }
+
+    .image-preview-container {
+      height: 160px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 12px 0;
+      display: none;
+      position: relative;
+    }
+
+    .image-preview-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Map Preview */
+    .map-preview {
+      height: 180px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--neutral-30);
+      background: #f0f4f8;
+    }
+
+    .map-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Modal */
+    .modal-content {
+      border-radius: 12px;
+      border: 1px solid var(--neutral-30);
+    }
+
+    .modal-header, .modal-footer {
+      border-color: var(--neutral-30);
+    }
+
+    @media (max-width: 991px) {
+      .sidebar { width: 200px; }
+      .main-content { margin-left: 200px; }
+    }
+
+    @media (max-width: 767px) {
+      .sidebar { display: none; }
+      .main-content { margin-left: 0; }
+      .modal-dialog { margin: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="brand">
+    <h5><img src="https://media.licdn.com/dms/image/v2/D4E16AQHWGrBJK4VrZg/profile-displaybackgroundimage-shrink_200_800/profile-displaybackgroundimage-shrink_200_800/0/1665939030505?e=2147483647&v=beta&t=imoZ7TxnaCF7bDHEJSI5b6oTIjVjo37ix5pkzZi2jAc" style="    width: 100%;"></h5>
+    </div>
+    <ul class="nav flex-column">
+      <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+      <li class="nav-item"><a class="nav-link active" href="location.html"><i class="bi bi-geo-alt"></i> Location Master</a></li>
+      <li class="nav-item"><a class="nav-link" href="activity-master.html"><i class="bi bi-journal-text"></i> Activity Master</a></li>
+      <li class="nav-item"><a class="nav-link" href="school.html"><i class="bi bi-building"></i> School Management</a></li>
+            <li class="nav-item"><a class="nav-link" href="school-subscription.html"><i class="bi bi-credit-card"></i> Subscriptions</a></li>
+      <li class="nav-item"><a class="nav-link" href="customer.html"><i class="bi bi-person"></i> Customers</a></li>
+      <li class="nav-item"><a class="nav-link" href="booking.html"><i class="bi bi-calendar-check"></i> Bookings</a></li>
+      <li class="nav-item"><a class="nav-link" href="Trainer.html"><i class="bi bi-person-badge"></i> Trainers</a></li>
+      <li class="nav-item"><a class="nav-link" href="vol.html"><i class="bi bi-hand-index-thumb"></i> Volunteers</a></li>
+      <li class="nav-item"><a class="nav-link" href="Attendance.html"><i class="bi bi-clipboard-check"></i> Attendance</a></li>
+       <li class="nav-item"><a class="nav-link" href="users.html"><i class="bi bi-people"></i> User Management</a></li>
+          <li class="nav-item"><a class="nav-link " href="#"><i class="bi bi-exclamation-triangle"></i> Issue Card Management</a></li>
+                     <li class="nav-item"><a class="nav-link" href="Device.html"><i class="bi bi-fingerprint"></i> Device Management</a></li>
+                      <li class="nav-item"><a class="nav-link" href="report.html"><i class="bi bi-graph-up"></i> Financial Reports</a></li>
+                       <li class="nav-item"><a class="nav-link" href="item-request.html"><i class="bi bi-cart"></i> Stationary Requests</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="fw-bold" style="color: var(--neutral-160);font-size: 18px!important;" >Location Master</h2>
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#locationModal">
+        <i class="bi bi-plus-lg me-1"></i> Add Location
+      </button>
+    </div>
+
+    <!-- Locations Table -->
+    <div class="card">
+      <div class="table-responsive">
+        <table class="table table-borderless mb-0">
+          <thead>
+            <tr>
+              <th>NAME</th>
+              <th>LOCATION</th>
+              <th>ADDRESS</th>
+              <th>COORDINATES</th>
+              <th class="text-end">ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Central Park</strong></td>
+              <td>New York, USA</td>
+              <td>789 5th Ave, NY 10021</td>
+              <td>40.7812°, -73.9665°</td>
+              <td class="text-end">
+                <button class="action-btn" title="Edit"><i class="bi bi-pencil"></i></button>
+                <button class="action-btn delete" title="Delete"><i class="bi bi-trash"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Riverside Stadium</strong></td>
+              <td>London, UK</td>
+              <td>123 Thames St, London SE1</td>
+              <td>51.5074°, -0.1278°</td>
+              <td class="text-end">
+                <button class="action-btn" title="Edit"><i class="bi bi-pencil"></i></button>
+                <button class="action-btn delete" title="Delete"><i class="bi bi-trash"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Location Modal -->
+  <div class="modal fade" id="locationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Add New Location</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="locationForm">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label">Name *</label>
+                  <input type="text" class="form-control" placeholder="e.g. Central Park" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Location Name *</label>
+                  <input type="text" class="form-control" placeholder="e.g. New York, USA" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Address *</label>
+                  <textarea class="form-control" rows="2" placeholder="Street, City, Postal Code, Country" required></textarea>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Latitude</label>
+                      <input type="text" class="form-control" id="latInput" placeholder="40.7812">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Longitude</label>
+                      <input type="text" class="form-control" id="lngInput" placeholder="-73.9665">
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Description</label>
+                  <textarea class="form-control" rows="3" placeholder="Brief description of the location"></textarea>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label">Location Image</label>
+                  <div class="image-upload-area" id="dropArea">
+                    <i class="bi bi-cloud-upload fs-1 text-muted mb-2"></i>
+                    <p class="text-muted mb-0">Drag & drop or click to upload</p>
+                    <input type="file" class="d-none" id="imageUpload" accept="image/*">
+                  </div>
+                  <div class="image-preview-container" id="imagePreviewContainer">
+                    <img id="imagePreview" src="" alt="Preview">
+                  </div>
+                  <div class="form-text text-muted">JPG/PNG, max 2MB</div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Map Preview</label>
+                  <div class="map-preview">
+                    <img id="mapPreview" src="https://cdn.prod.website-files.com/609ed46055e27a02ffc0749b/668ed8667b8f99bf161e4f73_6109d5eb9924cd815cbf3d50_hero3.png" alt="Map">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" form="locationForm" class="btn btn-primary">Save Location</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Image Upload
+    const dropArea = document.getElementById('dropArea');
+    const fileInput = document.getElementById('imageUpload');
+    const previewContainer = document.getElementById('imagePreviewContainer');
+    const previewImg = document.getElementById('imagePreview');
+
+    ['click', 'dragover', 'dragleave', 'drop'].forEach(evt => {
+      dropArea.addEventListener(evt, e => {
+        e.preventDefault();
+        e.stopPropagation();
+      });
+    });
+
+    dropArea.addEventListener('click', () => fileInput.click());
+    dropArea.addEventListener('drop', e => {
+      const file = e.dataTransfer.files[0] || fileInput.files[0];
+      handleImage(file);
+    });
+
+    fileInput.addEventListener('change', e => {
+      const file = e.target.files[0];
+      handleImage(file);
+    });
+
+    function handleImage(file) {
+      if (!file || !file.type.match('image.*')) return;
+      
+      const reader = new FileReader();
+      reader.onload = e => {
+        previewImg.src = e.target.result;
+        previewContainer.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Map Preview (Google Static Maps - replace with your API key in production)
+    function updateMapPreview() {
+      const lat = document.getElementById('latInput').value;
+      const lng = document.getElementById('lngInput').value;
+      const mapImg = document.getElementById('mapPreview');
+      
+      if (lat && lng) {
+        // ⚠️ Replace YOUR_API_KEY with a real Google Maps API key
+        const apiKey = 'YOUR_API_KEY';
+        const url = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=14&size=400x180&markers=color:red%7C${lat},${lng}&key=${apiKey}`;
+        mapImg.src = url;
+      } else {
+        mapImg.src = "https://via.placeholder.com/400x180/e2e8f0/64748b?text=Enter+Coordinates";
+      }
+    }
+
+    document.getElementById('latInput').addEventListener('input', updateMapPreview);
+    document.getElementById('lngInput').addEventListener('input', updateMapPreview);
+  </script>
+</body>
+</html>

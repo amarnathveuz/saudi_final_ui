@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Greenwood High School | Customer Details</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root {
+      --neutral-0: #ffffff;
+      --neutral-10: #f8fafc;
+      --neutral-20: #f1f5f9;
+      --neutral-30: #e2e8f0;
+      --neutral-40: #cbd5e1;
+      --neutral-60: #94a3b8;
+      --neutral-80: #64748b;
+      --neutral-100: #475569;
+      --neutral-120: #334155;
+      --neutral-140: #1e293b;
+      --neutral-160: #0f172a;
+
+      --accent-blue: #3b82f6;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --accent-orange: #f59e0b;
+      --accent-purple: #8b5cf6;
+      --accent-indigo: #6366f1;
+
+      --card-gradient: linear-gradient(160deg, rgba(255,255,255,0.95), rgba(248, 250, 252, 0.98));
+    }
+
+    body {
+      background-color: var(--neutral-10);
+      color: var(--neutral-140);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      background: var(--neutral-0);
+      border-right: 1px solid var(--neutral-30);
+      min-height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 240px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .sidebar .brand {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--neutral-30);
+    }
+
+    .sidebar .brand img {
+      width: 100%;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .sidebar .nav-link {
+      color: var(--neutral-100);
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .sidebar .nav-link:hover,
+    .sidebar .nav-link.active {
+      background: rgba(59, 130, 246, 0.06);
+      color: var(--accent-blue);
+      border-left: 3px solid var(--accent-blue);
+      padding-left: 21px;
+    }
+
+    .sidebar .nav-link i {
+      width: 20px;
+      margin-right: 12px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .main-content {
+      margin-left: 240px;
+      padding: 24px;
+    }
+
+    .school-header {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-indigo));
+      color: white;
+      padding: 24px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
+    }
+
+    .school-header h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .school-header p {
+      opacity: 0.9;
+      margin: 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--card-gradient);
+      border: 1px solid var(--neutral-30);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+      transition: transform 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .stat-card.total {
+      border-top: 4px solid var(--accent-blue);
+    }
+
+    .stat-card.today {
+      border-top: 4px solid var(--accent-green);
+    }
+
+    .stat-card.month {
+      border-top: 4px solid var(--accent-purple);
+    }
+
+    .stat-card.expired {
+      border-top: 4px solid var(--accent-red);
+    }
+
+    .stat-card.overdue {
+      border-top: 4px solid var(--accent-orange);
+    }
+
+    .stat-number {
+      font-size: 28px;
+      font-weight: 700;
+      margin: 8px 0;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--neutral-100);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .customer-card {
+      background: var(--card-gradient);
+      border: 1px solid var(--neutral-30);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .customer-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    }
+
+    .customer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .customer-info h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--neutral-160);
+      margin: 0 0 4px 0;
+    }
+
+    .customer-info p {
+      font-size: 13px;
+      color: var(--neutral-100);
+      margin: 2px 0;
+    }
+
+    .subscription-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--accent-blue);
+    }
+
+    .subscription-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .detail-item {
+      background: var(--neutral-20);
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    .detail-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--neutral-100);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .detail-value {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--neutral-140);
+    }
+
+    .members-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--neutral-30);
+    }
+
+    .members-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(139, 92, 246, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-purple);
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .members-icon:hover {
+      background: rgba(139, 92, 246, 0.2);
+      transform: scale(1.1);
+    }
+
+    .members-text {
+      font-size: 13px;
+      color: var(--neutral-100);
+    }
+
+    .members-count {
+      font-weight: 600;
+      color: var(--accent-purple);
+    }
+
+    .status-active {
+      color: var(--accent-green);
+      font-weight: 600;
+    }
+
+    .status-expired {
+      color: var(--accent-red);
+      font-weight: 600;
+    }
+
+    .status-overdue {
+      color: var(--accent-orange);
+      font-weight: 600;
+    }
+
+    .modal-content {
+      border-radius: 12px;
+      border: 1px solid var(--neutral-30);
+    }
+
+    .modal-header, .modal-footer {
+      border-color: var(--neutral-30);
+    }
+
+    @media (max-width: 991px) {
+      .sidebar { width: 200px; }
+      .main-content { margin-left: 200px; }
+    }
+
+    @media (max-width: 767px) {
+      .sidebar { display: none; }
+      .main-content { margin-left: 0; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .subscription-details { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="brand">
+      <img src="https://media.licdn.com/dms/image/v2/D4E16AQHWGrBJK4VrZg/profile-displaybackgroundimage-shrink_200_800/profile-displaybackgroundimage-shrink_200_800/0/1665939030505?e=2147483647&v=beta&t=imoZ7TxnaCF7bDHEJSI5b6oTIjVjo37ix5pkzZi2jAc" alt="Club Logo">
+    </div>
+    <ul class="nav flex-column">
+      <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+      <li class="nav-item"><a class="nav-link" href="location.html"><i class="bi bi-geo-alt"></i> Location Master</a></li>
+      <li class="nav-item"><a class="nav-link" href="activity-master.html"><i class="bi bi-journal-text"></i> Activity Master</a></li>
+      <li class="nav-item"><a class="nav-link" href="school.html"><i class="bi bi-building"></i> School Management</a></li>
+      <li class="nav-item"><a class="nav-link active" href="school-subscription.html"><i class="bi bi-credit-card"></i> Subscriptions</a></li>
+      <li class="nav-item"><a class="nav-link" href="customer.html"><i class="bi bi-person"></i> Customers</a></li>
+      <li class="nav-item"><a class="nav-link" href="booking.html"><i class="bi bi-calendar-check"></i> Bookings</a></li>
+      <li class="nav-item"><a class="nav-link" href="Trainer.html"><i class="bi bi-person-badge"></i> Trainers</a></li>
+      <li class="nav-item"><a class="nav-link" href="vol.html"><i class="bi bi-hand-index-thumb"></i> Volunteers</a></li>
+      <li class="nav-item"><a class="nav-link" href="Attendance.html"><i class="bi bi-clipboard-check"></i> Attendance</a></li>
+         <li class="nav-item"><a class="nav-link " href="#"><i class="bi bi-exclamation-triangle"></i> Issue Card Management</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Device.html"><i class="bi bi-fingerprint"></i> Device Management</a></li>
+                     <li class="nav-item"><a class="nav-link" href="report.html"><i class="bi bi-graph-up"></i> Financial Reports</a></li>
+                      <li class="nav-item"><a class="nav-link" href="item-request.html"><i class="bi bi-cart"></i> Stationary Requests</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- School Header -->
+    <div class="school-header">
+      <h1>Greenwood High School</h1>
+      <p>123 Education St, City • contact@greenwood.edu • +1 (555) 123-4567</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card total">
+        <div class="stat-number">127</div>
+        <div class="stat-label">Total Subscribers</div>
+      </div>
+      <div class="stat-card today">
+        <div class="stat-number">8</div>
+        <div class="stat-label">Today's Signups</div>
+      </div>
+      <div class="stat-card month">
+        <div class="stat-number">42</div>
+        <div class="stat-label">This Month</div>
+      </div>
+      <div class="stat-card expired">
+        <div class="stat-number">15</div>
+        <div class="stat-label">Expired</div>
+      </div>
+      <div class="stat-card overdue">
+        <div class="stat-number">7</div>
+        <div class="stat-label">Overdue</div>
+      </div>
+    </div>
+
+    <a style="       padding: 12px 12px;
+    float: right;
+    background: #636363;
+    color: white;
+    text-decoration: none;" href="shool-time.html">Time Slot Management</a>
+      <a style="       padding: 12px 12px;
+    float: right;
+    background: #676fe8;
+    color: white;
+    text-decoration: none;" href="shool-time.html">Freeze / Extend Subscription</a>
+    <!-- Customers List -->
+    <h3 class="mb-4 fw-bold" style="color: var(--neutral-160);">Customer Subscriptions</h3>
+
+    <!-- Customer Card 1 -->
+    <div class="customer-card">
+      <div class="customer-header">
+        <div class="customer-info">
+          <h3>John Smith</h3>
+          <p><i class="bi bi-envelope me-1"></i> john.smith@email.com</p>
+          <p><i class="bi bi-telephone me-1"></i> +1 (555) 123-4567</p>
+        </div>
+        <span class="subscription-badge">Annual Plan</span>
+      </div>
+      
+      <div class="subscription-details">
+        <div class="detail-item">
+          <div class="detail-label">Start Date</div>
+          <div class="detail-value">Jan 15, 2024</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">End Date</div>
+          <div class="detail-value status-active">Jan 14, 2025</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Payment</div>
+          <div class="detail-value">$1,200 (Paid)</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Status</div>
+          <div class="detail-value status-active">Active</div>
+        </div>
+      </div>
+      
+      <div class="members-section">
+        <div class="members-icon" data-bs-toggle="modal" data-bs-target="#membersModal">
+          <i class="bi bi-people"></i>
+        </div>
+        <div class="members-text">
+          <span class="members-count">8 Members</span> (5 Adults, 3 Children)
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer Card 2 -->
+    <div class="customer-card">
+      <div class="customer-header">
+        <div class="customer-info">
+          <h3>Sarah Johnson</h3>
+          <p><i class="bi bi-envelope me-1"></i> sarah.j@company.com</p>
+          <p><i class="bi bi-telephone me-1"></i> +1 (555) 987-6543</p>
+        </div>
+        <span class="subscription-badge">6 Months</span>
+      </div>
+      
+      <div class="subscription-details">
+        <div class="detail-item">
+          <div class="detail-label">Start Date</div>
+          <div class="detail-value">Mar 1, 2024</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">End Date</div>
+          <div class="detail-value status-overdue">Aug 31, 2024</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Payment</div>
+          <div class="detail-value">$600 (Paid)</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Status</div>
+          <div class="detail-value status-overdue">Overdue</div>
+        </div>
+      </div>
+      
+      <div class="members-section">
+        <div class="members-icon" data-bs-toggle="modal" data-bs-target="#membersModal">
+          <i class="bi bi-people"></i>
+        </div>
+        <div class="members-text">
+          <span class="members-count">4 Members</span> (2 Adults, 2 Children)
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer Card 3 -->
+    <div class="customer-card">
+      <div class="customer-header">
+        <div class="customer-info">
+          <h3>Michael Chen</h3>
+          <p><i class="bi bi-envelope me-1"></i> michael.chen@email.com</p>
+          <p><i class="bi bi-telephone me-1"></i> +1 (555) 456-7890</p>
+        </div>
+        <span class="subscription-badge">Monthly Plan</span>
+      </div>
+      
+      <div class="subscription-details">
+        <div class="detail-item">
+          <div class="detail-label">Start Date</div>
+          <div class="detail-value">Dec 1, 2023</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">End Date</div>
+          <div class="detail-value status-expired">Dec 31, 2023</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Payment</div>
+          <div class="detail-value">$100 (Paid)</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Status</div>
+          <div class="detail-value status-expired">Expired</div>
+        </div>
+      </div>
+      
+      <div class="members-section">
+        <div class="members-icon" data-bs-toggle="modal" data-bs-target="#membersModal">
+          <i class="bi bi-people"></i>
+        </div>
+        <div class="members-text">
+          <span class="members-count">2 Members</span> (2 Adults, 0 Children)
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer Card 4 -->
+    <div class="customer-card">
+      <div class="customer-header">
+        <div class="customer-info">
+          <h3>Emily Davis</h3>
+          <p><i class="bi bi-envelope me-1"></i> emily.davis@email.com</p>
+          <p><i class="bi bi-telephone me-1"></i> +1 (555) 234-5678</p>
+        </div>
+        <span class="subscription-badge">Annual Plan</span>
+      </div>
+      
+      <div class="subscription-details">
+        <div class="detail-item">
+          <div class="detail-label">Start Date</div>
+          <div class="detail-value">Feb 10, 2024</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">End Date</div>
+          <div class="detail-value status-active">Feb 9, 2025</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Payment</div>
+          <div class="detail-value">$1,200 (Paid)</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Status</div>
+          <div class="detail-value status-active">Active</div>
+        </div>
+      </div>
+      
+      <div class="members-section">
+        <div class="members-icon" data-bs-toggle="modal" data-bs-target="#membersModal">
+          <i class="bi bi-people"></i>
+        </div>
+        <div class="members-text">
+          <span class="members-count">6 Members</span> (3 Adults, 3 Children)
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Members Modal -->
+  <div class="modal fade" id="membersModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Member Details - John Smith Family</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <!-- Adult Member 1 -->
+            <div class="col-md-6">
+              <div class="card p-3">
+                <div class="d-flex align-items-center mb-2">
+                  <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                    <i class="bi bi-person"></i>
+                  </div>
+                  <div>
+                    <h6 class="mb-0 fw-bold">John Smith</h6>
+                    <small class="text-muted">Adult • Primary</small>
+                  </div>
+                </div>
+                <div class="small text-muted">
+                  <div><i class="bi bi-envelope me-1"></i> john.smith@email.com</div>
+                  <div><i class="bi bi-telephone me-1"></i> +1 (555) 123-4567</div>
+                  <div><i class="bi bi-calendar me-1"></i> Age: 35</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Adult Member 2 -->
+            <div class="col-md-6">
+              <div class="card p-3">
+                <div class="d-flex align-items-center mb-2">
+                  <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                    <i class="bi bi-person"></i>
+                  </div>
+                  <div>
+                    <h6 class="mb-0 fw-bold">Lisa Smith</h6>
+                    <small class="text-muted">Adult • Spouse</small>
+                  </div>
+                </div>
+                <div class="small text-muted">
+                  <div><i class="bi bi-envelope me-1"></i> lisa.smith@email.com</div>
+                  <div><i class="bi bi-telephone me-1"></i> +1 (555) 123-4568</div>
+                  <div><i class="bi bi-calendar me-1"></i> Age: 33</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Child Member 1 -->
+            <div class="col-md-4">
+              <div class="card p-3">
+                <div class="d-flex align-items-center mb-2">
+                  <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                    <i class="bi bi-person"></i>
+                  </div>
+                  <div>
+                    <h6 class="mb-0 fw-bold">Emma Smith</h6>
+                    <small class="text-muted">Child</small>
+                  </div>
+                </div>
+                <div class="small text-muted">
+                  <div><i class="bi bi-calendar me-1"></i> Age: 12</div>
+                  <div><i class="bi bi-geo-alt me-1"></i> Grade: 7</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Child Member 2 -->
+            <div class="col-md-4">
+              <div class="card p-3">
+                <div class="d-flex align-items-center mb-2">
+                  <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                    <i class="bi bi-person"></i>
+                  </div>
+                  <div>
+                    <h6 class="mb-0 fw-bold">Noah Smith</h6>
+                    <small class="text-muted">Child</small>
+                  </div>
+                </div>
+                <div class="small text-muted">
+                  <div><i class="bi bi-calendar me-1"></i> Age: 9</div>
+                  <div><i class="bi bi-geo-alt me-1"></i> Grade: 4</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Child Member 3 -->
+            <div class="col-md-4">
+              <div class="card p-3">
+                <div class="d-flex align-items-center mb-2">
+                  <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                    <i class="bi bi-person"></i>
+                  </div>
+                  <div>
+                    <h6 class="mb-0 fw-bold">Lily Smith</h6>
+                    <small class="text-muted">Child</small>
+                  </div>
+                </div>
+                <div class="small text-muted">
+                  <div><i class="bi bi-calendar me-1"></i> Age: 6</div>
+                  <div><i class="bi bi-geo-alt me-1"></i> Grade: 1</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Modal will show member details for the clicked customer
+    document.querySelectorAll('.members-icon').forEach(icon => {
+      icon.addEventListener('click', function() {
+        const customerName = this.closest('.customer-card').querySelector('.customer-info h3').textContent;
+        const modalTitle = document.querySelector('#membersModal .modal-title');
+        modalTitle.textContent = `Member Details - ${customerName} Family`;
+      });
+    });
+  </script>
+</body>
+</html>

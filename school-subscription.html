@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manage Subscription | Club Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root {
+      --neutral-0: #ffffff;
+      --neutral-10: #f8fafc;
+      --neutral-20: #f1f5f9;
+      --neutral-30: #e2e8f0;
+      --neutral-40: #cbd5e1;
+      --neutral-60: #94a3b8;
+      --neutral-80: #64748b;
+      --neutral-100: #475569;
+      --neutral-120: #334155;
+      --neutral-140: #1e293b;
+      --neutral-160: #0f172a;
+
+      --accent-blue: #3b82f6;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --accent-orange: #f59e0b;
+      --accent-purple: #8b5cf6;
+
+      --card-gradient: linear-gradient(160deg, rgba(255,255,255,0.95), rgba(248, 250, 252, 0.98));
+    }
+
+    body {
+      background-color: var(--neutral-10);
+      color: var(--neutral-140);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      background: var(--neutral-0);
+      border-right: 1px solid var(--neutral-30);
+      min-height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 240px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .sidebar .brand {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--neutral-30);
+    }
+
+    .sidebar .brand img {
+      width: 100%;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .sidebar .nav-link {
+      color: var(--neutral-100);
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .sidebar .nav-link:hover,
+    .sidebar .nav-link.active {
+      background: rgba(59, 130, 246, 0.06);
+      color: var(--accent-blue);
+      border-left: 3px solid var(--accent-blue);
+      padding-left: 21px;
+    }
+
+    .sidebar .nav-link i {
+      width: 20px;
+      margin-right: 12px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .main-content {
+      margin-left: 240px;
+      padding: 24px;
+    }
+
+    .card {
+      background: var(--card-gradient);
+      border: 1px solid var(--neutral-30);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+    }
+
+    .form-label {
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--neutral-100);
+      margin-bottom: 8px;
+    }
+
+    .form-control, .form-select, .form-check-input {
+      border: 1px solid var(--neutral-30);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    .btn-primary {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      padding: 10px 20px;
+      font-weight: 600;
+      border-radius: 8px;
+    }
+
+    .btn-outline-secondary {
+      border-color: var(--neutral-30);
+      color: var(--neutral-100);
+    }
+
+    .modal-content {
+      border-radius: 12px;
+      border: 1px solid var(--neutral-30);
+    }
+
+    .modal-header, .modal-footer {
+      border-color: var(--neutral-30);
+    }
+
+    .subscription-type-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 12px;
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--accent-blue);
+    }
+
+    .payment-type-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 12px;
+    }
+
+    .payment-paid { background: rgba(16, 185, 129, 0.1); color: var(--accent-green); }
+    .payment-free { background: rgba(156, 163, 175, 0.1); color: var(--neutral-100); }
+
+    @media (max-width: 991px) {
+      .sidebar { width: 200px; }
+      .main-content { margin-left: 200px; }
+    }
+
+    @media (max-width: 767px) {
+      .sidebar { display: none; }
+      .main-content { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="brand">
+      <img src="https://media.licdn.com/dms/image/v2/D4E16AQHWGrBJK4VrZg/profile-displaybackgroundimage-shrink_200_800/profile-displaybackgroundimage-shrink_200_800/0/1665939030505?e=2147483647&v=beta&t=imoZ7TxnaCF7bDHEJSI5b6oTIjVjo37ix5pkzZi2jAc" alt="Club Logo">
+    </div>
+    <ul class="nav flex-column">
+      <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+      <li class="nav-item"><a class="nav-link" href="location.html"><i class="bi bi-geo-alt"></i> Location Master</a></li>
+      <li class="nav-item"><a class="nav-link" href="activity-master.html"><i class="bi bi-journal-text"></i> Activity Master</a></li>
+      <li class="nav-item"><a class="nav-link" href="school.html"><i class="bi bi-building"></i> School Management</a></li>
+      <li class="nav-item"><a class="nav-link active" href="school.html"><i class="bi bi-credit-card"></i> Subscriptions</a></li>
+      <li class="nav-item"><a class="nav-link" href="customer.html"><i class="bi bi-person"></i> Customers</a></li>
+      <li class="nav-item"><a class="nav-link" href="booking.html"><i class="bi bi-calendar-check"></i> Bookings</a></li>
+      <li class="nav-item"><a class="nav-link" href="Trainer.html"><i class="bi bi-person-badge"></i> Trainers</a></li>
+      <li class="nav-item"><a class="nav-link" href="vol.html"><i class="bi bi-hand-index-thumb"></i> Volunteers</a></li>
+      <li class="nav-item"><a class="nav-link" href="Attendance.html"><i class="bi bi-clipboard-check"></i> Attendance</a></li>
+       <li class="nav-item"><a class="nav-link" href="users.html"><i class="bi bi-people"></i> User Management</a></li>
+          <li class="nav-item"><a class="nav-link " href="#"><i class="bi bi-exclamation-triangle"></i> Issue Card Management</a></li>
+                     <li class="nav-item"><a class="nav-link" href="Device.html"><i class="bi bi-fingerprint"></i> Device Management</a></li>
+                      <li class="nav-item"><a class="nav-link" href="report.html"><i class="bi bi-graph-up"></i> Financial Reports</a></li>
+                       <li class="nav-item"><a class="nav-link" href="item-request.html"><i class="bi bi-cart"></i> Stationary Requests</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="fw-bold" style="color: var(--neutral-160); font-size: 18px!important;">Manage Subscription</h2>
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#subscriptionModal">
+        <i class="bi bi-plus-lg me-1"></i> Add Subscription
+      </button>
+    </div>
+
+    <!-- Current Subscription Card -->
+    <div class="card mb-4">
+      <div class="d-flex justify-content-between align-items-start mb-3">
+        <div>
+          <h4 class="mb-2">Greenwood High School</h4>
+          <p class="text-muted mb-1"><i class="bi bi-geo-alt me-1"></i> 123 Education St, City</p>
+        </div>
+        <span class="subscription-type-badge">Annual Plan</span>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <small class="text-muted">Subscription Type</small>
+          <p class="mb-0">1 Year</p>
+        </div>
+        <div class="col-md-4 mb-3">
+          <small class="text-muted">Duration</small>
+          <p class="mb-0">Jan 1, 2024 - Dec 31, 2024</p>
+        </div>
+        <div class="col-md-4 mb-3">
+          <small class="text-muted">Payment Type</small>
+          <span class="payment-type-badge payment-paid">Paid - $1,200</span>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <small class="text-muted">Member Access</small>
+          <p class="mb-0">Yes (Adults: 50, Children: 100)</p>
+        </div>
+        <div class="col-md-6 mb-3">
+          <small class="text-muted">Status</small>
+          <p class="text-success mb-0"><i class="bi bi-check-circle me-1"></i> Active</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subscription History -->
+    <div class="card">
+      <h5 class="mb-3">Subscription History</h5>
+      <div class="table-responsive">
+        <table class="table table-borderless mb-0">
+          <thead>
+            <tr>
+              <th>TYPE</th>
+              <th>DURATION</th>
+              <th>MEMBERS</th>
+              <th>PAYMENT</th>
+              <th>STATUS</th>
+              <th>ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="subscription-type-badge">6 Months</span></td>
+              <td>Jul 1, 2023 - Dec 31, 2023</td>
+              <td>Yes (Adults: 40, Children: 80)</td>
+              <td><span class="payment-type-badge payment-paid">Paid - $600</span></td>
+              <td><span class="text-success">Active</span></td>
+              <td>
+                <button class="btn btn-sm btn-outline-secondary">View</button>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="subscription-type-badge">1 Month</span></td>
+              <td>Jun 1, 2023 - Jun 30, 2023</td>
+              <td>No</td>
+              <td><span class="payment-type-badge payment-free">Free</span></td>
+              <td><span class="text-muted">Expired</span></td>
+              <td>
+                <button class="btn btn-sm btn-outline-secondary">View</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Subscription Modal -->
+  <div class="modal fade" id="subscriptionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Create New Subscription</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="subscriptionForm">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label">Select School *</label>
+                  <select class="form-select" required>
+                    <option value="">Choose a school</option>
+                    <option value="1">Greenwood High School</option>
+                    <option value="2">St. Mary's Academy</option>
+                    <option value="3">Boys Preparatory School</option>
+                    <option value="4">City International School</option>
+                  </select>
+                </div>
+                
+                <div class="mb-3">
+                  <label class="form-label">Subscription Type *</label>
+                  <select class="form-select" id="subscriptionType" required>
+                    <option value="">Select subscription type</option>
+                    <option value="1_day">1 Day</option>
+                    <option value="1_week">1 Week</option>
+                    <option value="1_month">1 Month</option>
+                    <option value="3_months">3 Months</option>
+                    <option value="6_months">6 Months</option>
+                    <option value="1_year">1 Year</option>
+                        <option value="1_year">Date Range</option>
+                    <option value="custom">Custom Duration</option>
+                  </select>
+                </div>
+                
+                <div class="mb-3" id="customDurationGroup" style="display: none;">
+                  <label class="form-label">Custom Duration (Days)</label>
+                  <input type="number" class="form-control" min="1" placeholder="Enter number of days">
+                </div>
+                
+                <div class="mb-3">
+                  <label class="form-label">Member Access</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="memberAccess" id="memberAccessYes" value="yes">
+                    <label class="form-check-label" for="memberAccessYes">Yes</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="memberAccess" id="memberAccessNo" value="no" checked>
+                    <label class="form-check-label" for="memberAccessNo">No</label>
+                  </div>
+                </div>
+                
+                <div id="memberNumbers" style="display: none;">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Adult Members</label>
+                        <input type="number" class="form-control" min="0" value="0">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Child Members</label>
+                        <input type="number" class="form-control" min="0" value="0">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label">Payment Type *</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="paymentType" id="paymentFree" value="free" checked>
+                    <label class="form-check-label" for="paymentFree">Free</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="paymentType" id="paymentPaid" value="paid">
+                    <label class="form-check-label" for="paymentPaid">Paid</label>
+                  </div>
+                </div>
+                
+                <div id="paymentAmountGroup" style="display: none;">
+                  <div class="mb-3">
+                    <label class="form-label">Amount ($)</label>
+                    <input type="number" class="form-control" min="0" step="0.01" placeholder="Enter amount">
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label class="form-label">Start Date *</label>
+                  <input type="date" class="form-control" required>
+                </div>
+                
+                <div class="mb-3">
+                  <label class="form-label">Notes</label>
+                  <textarea class="form-control" rows="3" placeholder="Additional notes about this subscription"></textarea>
+                </div>
+              </div>
+              <div class="mb-3">
+  <label class="form-label">Allow Freezing/Extension?</label>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="allowFreezing" id="freezingYes" value="yes">
+    <label class="form-check-label" for="freezingYes">Yes</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="allowFreezing" id="freezingNo" value="no" checked>
+    <label class="form-check-label" for="freezingNo">No</label>
+  </div>
+</div>
+
+<div class="mb-3" id="freezingLimitGroup" style="display: none;">
+  <label class="form-label">Maximum Freeze/Extend Limit</label>
+  <input type="number" class="form-control" min="1" placeholder="Enter maximum count">
+</div>
+
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" form="subscriptionForm" class="btn btn-primary">Save Subscription</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Handle subscription type change
+    document.getElementById('subscriptionType').addEventListener('change', function() {
+      const customGroup = document.getElementById('customDurationGroup');
+      if (this.value === 'custom') {
+        customGroup.style.display = 'block';
+      } else {
+        customGroup.style.display = 'none';
+      }
+    });
+
+    // Handle member access toggle
+    const memberAccessYes = document.getElementById('memberAccessYes');
+    const memberAccessNo = document.getElementById('memberAccessNo');
+    const memberNumbers = document.getElementById('memberNumbers');
+    
+    memberAccessYes.addEventListener('change', function() {
+      if (this.checked) {
+        memberNumbers.style.display = 'block';
+      }
+    });
+    
+    memberAccessNo.addEventListener('change', function() {
+      if (this.checked) {
+        memberNumbers.style.display = 'none';
+      }
+    });
+
+    // Handle payment type toggle
+    const paymentFree = document.getElementById('paymentFree');
+    const paymentPaid = document.getElementById('paymentPaid');
+    const paymentAmountGroup = document.getElementById('paymentAmountGroup');
+    
+    paymentPaid.addEventListener('change', function() {
+      if (this.checked) {
+        paymentAmountGroup.style.display = 'block';
+      }
+    });
+    
+    paymentFree.addEventListener('change', function() {
+      if (this.checked) {
+        paymentAmountGroup.style.display = 'none';
+      }
+    });
+
+    // Form submission
+    document.getElementById('subscriptionForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Get form values
+      const formData = new FormData(this);
+      const subscriptionData = {
+        school: formData.get('school'),
+        subscriptionType: formData.get('subscriptionType'),
+        memberAccess: formData.get('memberAccess'),
+        paymentType: formData.get('paymentType'),
+        startDate: formData.get('startDate'),
+        notes: formData.get('notes')
+      };
+      
+      if (subscriptionData.memberAccess === 'yes') {
+        subscriptionData.adults = this.querySelector('input[placeholder="Adult Members"]').value;
+        subscriptionData.children = this.querySelector('input[placeholder="Child Members"]').value;
+      }
+      
+      if (subscriptionData.paymentType === 'paid') {
+        subscriptionData.amount = this.querySelector('input[placeholder="Enter amount"]').value;
+      }
+      
+      console.log('Subscription Data:', subscriptionData);
+      
+      // Close modal
+      const modal = bootstrap.Modal.getInstance(document.getElementById('subscriptionModal'));
+      modal.hide();
+      
+      // Reset form
+      this.reset();
+      document.getElementById('customDurationGroup').style.display = 'none';
+      document.getElementById('memberNumbers').style.display = 'none';
+      document.getElementById('paymentAmountGroup').style.display = 'none';
+      
+      alert('Subscription created successfully!');
+    });
+
+    
+  </script>
+
+  <script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Toggle freezing limit
+  document.querySelectorAll('input[name="allowFreezing"]').forEach(function(elem) {
+    elem.addEventListener('change', function() {
+      const group = document.getElementById('freezingLimitGroup');
+      group.style.display = (this.value === 'yes') ? 'block' : 'none';
+    });
+  });
+
+  // Existing behavior for member access
+  document.querySelectorAll('input[name="memberAccess"]').forEach(function(elem) {
+    elem.addEventListener('change', function() {
+      const group = document.getElementById('memberNumbers');
+      group.style.display = (this.value === 'yes') ? 'block' : 'none';
+    });
+  });
+
+  // Existing behavior for payment type
+  document.querySelectorAll('input[name="paymentType"]').forEach(function(elem) {
+    elem.addEventListener('change', function() {
+      const group = document.getElementById('paymentAmountGroup');
+      group.style.display = (this.value === 'paid') ? 'block' : 'none';
+    });
+  });
+
+  // Custom duration toggle
+  document.getElementById('subscriptionType').addEventListener('change', function() {
+    const customGroup = document.getElementById('customDurationGroup');
+    customGroup.style.display = (this.value === 'custom') ? 'block' : 'none';
+  });
+});
+</script>
+
+</body>
+</html>
