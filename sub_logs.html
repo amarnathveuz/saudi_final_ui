@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Subscription Payment Management | Club Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root {
+      --neutral-0: #ffffff;
+      --neutral-10: #f8fafc;
+      --neutral-20: #f1f5f9;
+      --neutral-30: #e2e8f0;
+      --neutral-40: #cbd5e1;
+      --neutral-60: #94a3b8;
+      --neutral-80: #64748b;
+      --neutral-100: #475569;
+      --neutral-120: #334155;
+      --neutral-140: #1e293b;
+      --neutral-160: #0f172a;
+
+      --accent-blue: #3b82f6;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --accent-orange: #f59e0b;
+      --accent-purple: #8b5cf6;
+      --accent-indigo: #6366f1;
+      --accent-teal: #0d9488;
+      --accent-rose: #e11d48;
+      --accent-cyan: #0891b2;
+      --accent-gray: #6b7280;
+
+      --card-gradient: linear-gradient(160deg, rgba(255,255,255,0.95), rgba(248, 250, 252, 0.98));
+    }
+
+    body {
+      background-color: var(--neutral-10);
+      color: var(--neutral-140);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      background: var(--neutral-0);
+      border-right: 1px solid var(--neutral-30);
+      min-height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 240px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .sidebar .brand {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--neutral-30);
+    }
+
+    .sidebar .brand img {
+      width: 100%;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .sidebar .nav-link {
+      color: var(--neutral-100);
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .sidebar .nav-link:hover,
+    .sidebar .nav-link.active {
+      background: rgba(59, 130, 246, 0.06);
+      color: var(--accent-blue);
+      border-left: 3px solid var(--accent-blue);
+      padding-left: 21px;
+    }
+
+    .sidebar .nav-link i {
+      width: 20px;
+      margin-right: 12px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .main-content {
+      margin-left: 240px;
+      padding: 24px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--card-gradient);
+      border: 1px solid var(--neutral-30);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+      transition: transform 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .stat-card.total {
+      border-top: 4px solid var(--accent-blue);
+    }
+
+    .stat-card.today {
+      border-top: 4px solid var(--accent-green);
+    }
+
+    .stat-card.expired {
+      border-top: 4px solid var(--accent-red);
+    }
+
+    .stat-card.online {
+      border-top: 4px solid var(--accent-teal);
+    }
+
+    .stat-card.offline {
+      border-top: 4px solid var(--accent-orange);
+    }
+
+    .stat-card.pending {
+      border-top: 4px solid var(--accent-purple);
+    }
+
+    .stat-number {
+      font-size: 28px;
+      font-weight: 700;
+      margin: 8px 0;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--neutral-100);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .search-section {
+      background: var(--card-gradient);
+      border: 1px solid var(--neutral-30);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+    }
+
+    .payment-card {
+      background: var(--card-gradient);
+      border: 1px solid var(--neutral-30);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .payment-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    }
+
+    .payment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .payment-info h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--neutral-160);
+      margin: 0 0 4px 0;
+    }
+
+    .payment-info p {
+      font-size: 13px;
+      color: var(--neutral-100);
+      margin: 2px 0;
+    }
+
+    .payment-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-btn {
+      width: 36px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      border-radius: 8px;
+      color: var(--neutral-80);
+      background: transparent;
+      border: 1px solid var(--neutral-30);
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: var(--neutral-20);
+      color: var(--accent-blue);
+      border-color: var(--accent-blue);
+    }
+
+    .action-btn.approve:hover {
+      color: var(--accent-green);
+      border-color: var(--accent-green);
+    }
+
+    .action-btn.reject:hover {
+      color: var(--accent-red);
+      border-color: var(--accent-red);
+    }
+
+    .action-btn.view:hover {
+      color: var(--accent-purple);
+      border-color: var(--accent-purple);
+    }
+
+    .payment-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .detail-item {
+      background: var(--neutral-20);
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    .detail-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--neutral-100);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .detail-value {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--neutral-140);
+    }
+
+    .status-badge {
+      font-size: 11px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .status-pending {
+      background: rgba(139, 92, 246, 0.1);
+      color: var(--accent-purple);
+    }
+
+    .status-approved {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--accent-green);
+    }
+
+    .status-rejected {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--accent-red);
+    }
+
+    .payment-type {
+      font-size: 11px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .type-online {
+      background: rgba(13, 148, 136, 0.1);
+      color: var(--accent-teal);
+    }
+
+    .type-offline {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--accent-orange);
+    }
+
+    .school-badge {
+      background: rgba(139, 92, 246, 0.1);
+      color: var(--accent-purple);
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .international-flag {
+      width: 24px;
+      height: 16px;
+      border-radius: 2px;
+      margin-right: 8px;
+      object-fit: cover;
+    }
+
+    .amount-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent-blue);
+    }
+
+    .btn-approve {
+      background: var(--accent-green);
+      border-color: var(--accent-green);
+    }
+
+    .btn-reject {
+      background: var(--accent-red);
+      border-color: var(--accent-red);
+    }
+
+    .btn-approve:hover {
+      background: #059669;
+      border-color: #059669;
+    }
+
+    .btn-reject:hover {
+      background: #dc2626;
+      border-color: #dc2626;
+    }
+
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 24px;
+    }
+
+    .pagination .page-item .page-link {
+      color: var(--neutral-100);
+      border-color: var(--neutral-30);
+    }
+
+    .pagination .page-item.active .page-link {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+    }
+
+    .modal-content {
+      border-radius: 12px;
+      border: 1px solid var(--neutral-30);
+    }
+
+    .modal-header, .modal-footer {
+      border-color: var(--neutral-30);
+    }
+
+    .image-preview {
+      max-width: 100%;
+      max-height: 200px;
+      margin-top: 10px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .upload-section {
+      border: 2px dashed var(--neutral-30);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      background: rgba(248, 250, 252, 0.7);
+      margin: 10px 0;
+    }
+
+    .upload-section:hover {
+      background: rgba(241, 245, 249, 0.9);
+    }
+
+    .image-container {
+      position: relative;
+      display: inline-block;
+      margin: 10px 0;
+    }
+
+    .image-container img {
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 8px;
+    }
+
+    .image-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .image-container:hover .image-overlay {
+      opacity: 1;
+    }
+
+    .view-image-btn {
+      background: white;
+      color: var(--neutral-160);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 991px) {
+      .sidebar { width: 200px; }
+      .main-content { margin-left: 200px; }
+    }
+
+    @media (max-width: 767px) {
+      .sidebar { display: none; }
+      .main-content { margin-left: 0; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .payment-details { grid-template-columns: 1fr; }
+      .payment-actions { flex-direction: column; }
+      .action-btn { width: 100%; margin-bottom: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="brand">
+      <img src="https://media.licdn.com/dms/image/v2/D4E16AQHWGrBJK4VrZg/profile-displaybackgroundimage-shrink_200_800/profile-displaybackgroundimage-shrink_200_800/0/1665939030505?e=2147483647&v=beta&t=imoZ7TxnaCF7bDHEJSI5b6oTIjVjo37ix5pkzZi2jAc" alt="Club Logo">
+    </div>
+    <ul class="nav flex-column">
+      <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+      <li class="nav-item"><a class="nav-link" href="location.html"><i class="bi bi-geo-alt"></i> Location Master</a></li>
+      <li class="nav-item"><a class="nav-link" href="activity-master.html"><i class="bi bi-journal-text"></i> Activity Master</a></li>
+      <li class="nav-item"><a class="nav-link" href="school-management.html"><i class="bi bi-building"></i> School Management</a></li>
+      <li class="nav-item"><a class="nav-link" href="shool-time.html"><i class="bi bi-clock"></i> Time Slot Management</a></li>
+      <li class="nav-item"><a class="nav-link active" href="#"><i class="bi bi-credit-card"></i> Subscription Payments</a></li>
+      <li class="nav-item"><a class="nav-link" href="customer.html"><i class="bi bi-person"></i> Customers</a></li>
+      <li class="nav-item"><a class="nav-link" href="booking.html"><i class="bi bi-calendar-check"></i> Bookings</a></li>
+      <li class="nav-item"><a class="nav-link" href="Trainer.html"><i class="bi bi-person-badge"></i> Trainers</a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-hand-index-thumb"></i> Volunteers</a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-people"></i> User Management</a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-credit-card"></i> Issue Card Management</a></li>
+      <li class="nav-item"><a class="nav-link" href="Device.html"><i class="bi bi-fingerprint"></i> Device Management</a></li>
+      <li class="nav-item"><a class="nav-link" href="report.html"><i class="bi bi-graph-up"></i> Financial Reports</a></li>
+      <li class="nav-item"><a class="nav-link" href="item-request.html"><i class="bi bi-cart"></i> Stationary Requests</a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-ticket-perforated"></i> Promo Codes</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="fw-bold" style="color: var(--neutral-160); font-size: 18px!important;">Subscription Payment Management</h2>
+      <div class="d-flex gap-2">
+        <select class="form-select" style="width: auto; min-width: 150px;" id="schoolFilter">
+          <option value="all">All Schools</option>
+          <option value="greenwood">Greenwood High School</option>
+          <option value="stmarys">St. Mary's Academy</option>
+          <option value="boysprep">Boys Preparatory School</option>
+          <option value="dubai">International School Dubai</option>
+          <option value="singapore">Singapore American School</option>
+        </select>
+        <select class="form-select" style="width: auto; min-width: 150px;">
+          <option>All Status</option>
+          <option>Pending</option>
+          <option>Approved</option>
+          <option>Rejected</option>
+        </select>
+        <button class="btn btn-primary">
+          <i class="bi bi-download me-1"></i> Export
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+     <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card total">
+        <div class="stat-number">$247,850</div>
+        <div class="stat-label">Total Subscription Revenue</div>
+      </div>
+
+
+
+
+ <div class="stat-card total">
+        <div class="stat-number">$247,850</div>
+<div class="stat-label">Today's Subscriptions</div>
+      </div>
+
+ <div class="stat-card total">
+        <div class="stat-number">$247,850</div>
+<div class="stat-label">Expired Subscriptions</div>
+      </div>
+
+
+
+
+
+
+      
+ <div class="stat-card total">
+        <div class="stat-number">$247,850</div>
+<div class="stat-label">Online Payments</div>
+      </div>
+ <div class="stat-card total">
+        <div class="stat-number">$247,850</div>
+<div class="stat-label">Offline Payments</div>
+      </div>
+
+ <div class="stat-card total">
+        <div class="stat-number">$247,850</div>
+<div class="stat-label">Pending Approvals</div>
+      </div>
+
+   
+    
+    
+    </div>
+
+    <!-- Search Section -->
+    <div class="search-section">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <input type="text" class="form-control" placeholder="Search by customer or subscription">
+        </div>
+        <div class="col-md-2">
+          <select class="form-select">
+            <option>All Payment Types</option>
+            <option>Online</option>
+            <option>Offline</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <select class="form-select">
+            <option>All Subscription Types</option>
+            <option>Annual Plan</option>
+            <option>6 Months</option>
+            <option>Monthly Plan</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <input type="date" class="form-control">
+        </div>
+        <div class="col-md-3">
+          <button class="btn btn-primary w-100">Search</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment Requests List -->
+    <!-- Payment Card 1 - Pending Online -->
+    <div class="payment-card" data-school="greenwood">
+      <div class="payment-header">
+        <div class="payment-info">
+          <h3><img src="https://flagcdn.com/w20/us.png" class="international-flag" alt="USA"> John Smith</h3>
+          <p><i class="bi bi-envelope me-1"></i> john.smith@email.com</p>
+          <p><i class="bi bi-building me-1"></i> Greenwood High School</p>
+        </div>
+        <div>
+          <span class="status-badge status-pending">Pending</span>
+        </div>
+      </div>
+      
+      <div class="payment-details">
+        <div class="detail-item">
+          <div class="detail-label">Subscription Type</div>
+          <div class="detail-value">Annual Plan</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Amount</div>
+          <div class="detail-value">
+            <span class="amount-value">$1,200</span>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Payment Type</div>
+          <div class="detail-value">
+            <span class="payment-type type-online">Online</span>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Requested On</div>
+          <div class="detail-value">Jan 22, 2024 • 09:15 AM</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Transaction ID</div>
+          <div class="detail-value">TXN-2024-0122-001</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Period</div>
+          <div class="detail-value">Jan 22, 2024 - Jan 21, 2025</div>
+        </div>
+      </div>
+      
+      <div class="payment-actions mt-3">
+        <button class="btn btn-approve btn-sm" data-bs-toggle="modal" data-bs-target="#approveModal">
+          <i class="bi bi-check-circle me-1"></i> Approve
+        </button>
+        <button class="btn btn-reject btn-sm" data-bs-toggle="modal" data-bs-target="#rejectModal">
+          <i class="bi bi-x-circle me-1"></i> Reject
+        </button>
+        <button class="action-btn view" data-bs-toggle="modal" data-bs-target="#viewProofModal" title="View Payment Proof">
+          <i class="bi bi-eye"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Payment Card 2 - Approved Offline -->
+    <div class="payment-card" data-school="stmarys">
+      <div class="payment-header">
+        <div class="payment-info">
+          <h3><img src="https://flagcdn.com/w20/ae.png" class="international-flag" alt="UAE"> Ahmed Al-Farsi</h3>
+          <p><i class="bi bi-envelope me-1"></i> ahmed.alfarsi@email.ae</p>
+          <p><i class="bi bi-building me-1"></i> St. Mary's Academy</p>
+        </div>
+        <div>
+          <span class="status-badge status-approved">Approved</span>
+        </div>
+      </div>
+      
+      <div class="payment-details">
+        <div class="detail-item">
+          <div class="detail-label">Subscription Type</div>
+          <div class="detail-value">6 Months</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Amount</div>
+          <div class="detail-value">
+            <span class="amount-value">$600</span>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Payment Type</div>
+          <div class="detail-value">
+            <span class="payment-type type-offline">Offline</span>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Approved On</div>
+          <div class="detail-value">Jan 21, 2024 • 02:30 PM</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Receipt No</div>
+          <div class="detail-value">REC-2024-0121-008</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Period</div>
+          <div class="detail-value">Jan 21, 2024 - Jul 20, 2024</div>
+        </div>
+      </div>
+      
+      <div class="payment-actions mt-3">
+        <button class="action-btn view" data-bs-toggle="modal" data-bs-target="#viewProofModal" title="View Payment Proof">
+          <i class="bi bi-eye"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Payment Card 3 - Rejected Online -->
+    <div class="payment-card" data-school="dubai">
+      <div class="payment-header">
+        <div class="payment-info">
+          <h3><img src="https://flagcdn.com/w20/sg.png" class="international-flag" alt="Singapore"> Li Wei Chen</h3>
+          <p><i class="bi bi-envelope me-1"></i> liwei.chen@email.sg</p>
+          <p><i class="bi bi-building me-1"></i> International School Dubai</p>
+        </div>
+        <div>
+          <span class="status-badge status-rejected">Rejected</span>
+        </div>
+      </div>
+      
+      <div class="payment-details">
+        <div class="detail-item">
+          <div class="detail-label">Subscription Type</div>
+          <div class="detail-value">Monthly Plan</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Amount</div>
+          <div class="detail-value">
+            <span class="amount-value">$100</span>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Payment Type</div>
+          <div class="detail-value">
+            <span class="payment-type type-online">Online</span>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Rejected On</div>
+          <div class="detail-value">Jan 20, 2024 • 11:45 AM</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Transaction ID</div>
+          <div class="detail-value">TXN-2024-0120-015</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Rejection Reason</div>
+          <div class="detail-value">Insufficient Funds</div>
+        </div>
+      </div>
+      
+      <div class="payment-actions mt-3">
+        <button class="action-btn view" data-bs-toggle="modal" data-bs-target="#viewProofModal" title="View Payment Proof">
+          <i class="bi bi-eye"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Payment Card 4 - Pending Offline -->
+    <div class="payment-card" data-school="boysprep">
+      <div class="payment-header">
+        <div class="payment-info">
+          <h3><img src="https://flagcdn.com/w20/gb.png" class="international-flag" alt="UK"> Emma Thompson</h3>
+          <p><i class="bi bi-envelope me-1"></i> emma.thompson@email.co.uk</p>
+          <p><i class="bi bi-building me-1"></i> Boys Preparatory School</p>
+        </div>
+        <div>
+          <span class="status-badge status-pending">Pending</span>
+        </div>
+      </div>
+      
+      <div class="payment-details">
+        <div class="detail-item">
+          <div class="detail-label">Subscription Type</div>
+          <div class="detail-value">Annual Plan</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Amount</div>
+          <div class="detail-value">
+            <span class="amount-value">$1,200</span>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Payment Type</div>
+          <div class="detail-value">
+            <span class="payment-type type-offline">Offline</span>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Requested On</div>
+          <div class="detail-value">Jan 22, 2024 • 01:30 PM</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Receipt No</div>
+          <div class="detail-value">REC-2024-0122-003</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Period</div>
+          <div class="detail-value">Jan 22, 2024 - Jan 21, 2025</div>
+        </div>
+      </div>
+      
+      <div class="payment-actions mt-3">
+        <button class="btn btn-approve btn-sm" data-bs-toggle="modal" data-bs-target="#approveModal">
+          <i class="bi bi-check-circle me-1"></i> Approve
+        </button>
+        <button class="btn btn-reject btn-sm" data-bs-toggle="modal" data-bs-target="#rejectModal">
+          <i class="bi bi-x-circle me-1"></i> Reject
+        </button>
+        <button class="action-btn view" data-bs-toggle="modal" data-bs-target="#viewProofModal" title="View Payment Proof">
+          <i class="bi bi-eye"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-container">
+      <nav>
+        <ul class="pagination">
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">Previous</a>
+          </li>
+          <li class="page-item active"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </main>
+
+  <!-- View Proof Modal -->
+  <div class="modal fade" id="viewProofModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Payment Proof - John Smith</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="image-container">
+            <img src="https://placehold.co/600x400/e2e8f0/64748b?text=Payment+Proof+Image" alt="Payment Proof">
+            <div class="image-overlay">
+              <button class="view-image-btn" onclick="window.open('https://placehold.co/600x400/e2e8f0/64748b?text=Payment+Proof+Image', '_blank')">
+                View Full Size
+              </button>
+            </div>
+          </div>
+          <div class="mt-3">
+            <h6>Payment Details</h6>
+            <p><strong>Amount:</strong> $1,200</p>
+            <p><strong>Payment Type:</strong> Online</p>
+            <p><strong>Transaction ID:</strong> TXN-2024-0122-001</p>
+            <p><strong>Date:</strong> Jan 22, 2024</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Approve Modal -->
+  <div class="modal fade" id="approveModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Approve Subscription Payment</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to approve this subscription payment?</p>
+          
+          <div class="mb-3">
+            <label class="form-label">Upload Approval Document (Optional)</label>
+            <div class="upload-section" id="approveDropArea">
+              <i class="bi bi-cloud-upload fs-1 mb-2"></i>
+              <p class="mb-0">Drag & drop or click to upload</p>
+              <input type="file" class="d-none" id="approveFileUpload" accept="image/*,.pdf">
+            </div>
+            <img id="approveImagePreview" class="image-preview" src="" alt="Preview">
+            <div class="form-text text-muted">JPG/PNG/PDF, max 5MB</div>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Approval Notes</label>
+            <textarea class="form-control" rows="3" placeholder="Enter approval notes (optional)"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-approve">Confirm Approval</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reject Modal -->
+  <div class="modal fade" id="rejectModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Reject Subscription Payment</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to reject this subscription payment?</p>
+          
+          <div class="mb-3">
+            <label class="form-label">Rejection Reason *</label>
+            <select class="form-select" required>
+              <option value="">Select reason</option>
+              <option value="insufficient">Insufficient Funds</option>
+              <option value="fraud">Suspected Fraud</option>
+              <option value="policy">Violates Payment Policy</option>
+              <option value="other">Other Reason</option>
+            </select>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Upload Rejection Document (Optional)</label>
+            <div class="upload-section" id="rejectDropArea">
+              <i class="bi bi-cloud-upload fs-1 mb-2"></i>
+              <p class="mb-0">Drag & drop or click to upload</p>
+              <input type="file" class="d-none" id="rejectFileUpload" accept="image/*,.pdf">
+            </div>
+            <img id="rejectImagePreview" class="image-preview" src="" alt="Preview">
+            <div class="form-text text-muted">JPG/PNG/PDF, max 5MB</div>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Additional Notes</label>
+            <textarea class="form-control" rows="3" placeholder="Please provide detailed explanation" required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-reject">Confirm Rejection</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // School filter functionality
+    function applySchoolFilter() {
+      const selectedSchool = document.getElementById('schoolFilter').value;
+      const cards = document.querySelectorAll('.payment-card');
+      
+      cards.forEach(card => {
+        if (selectedSchool === 'all' || card.getAttribute('data-school') === selectedSchool) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Event listener for school filter
+    document.getElementById('schoolFilter').addEventListener('change', applySchoolFilter);
+
+    // Image upload functionality for approve modal
+    const approveDropArea = document.getElementById('approveDropArea');
+    const approveFileInput = document.getElementById('approveFileUpload');
+    const approvePreview = document.getElementById('approveImagePreview');
+    
+    setupImageUpload(approveDropArea, approveFileInput, approvePreview);
+
+    // Image upload functionality for reject modal
+    const rejectDropArea = document.getElementById('rejectDropArea');
+    const rejectFileInput = document.getElementById('rejectFileUpload');
+    const rejectPreview = document.getElementById('rejectImagePreview');
+    
+    setupImageUpload(rejectDropArea, rejectFileInput, rejectPreview);
+
+    // Generic image upload setup function
+    function setupImageUpload(dropArea, fileInput, preview) {
+      ['click', 'dragover', 'dragleave', 'drop'].forEach(evt => {
+        dropArea.addEventListener(evt, e => {
+          e.preventDefault();
+          e.stopPropagation();
+        });
+      });
+
+      dropArea.addEventListener('click', () => fileInput.click());
+      dropArea.addEventListener('drop', e => {
+        const file = e.dataTransfer.files[0] || fileInput.files[0];
+        handleImage(file, preview);
+      });
+
+      fileInput.addEventListener('change', e => {
+        const file = e.target.files[0];
+        handleImage(file, preview);
+      });
+    }
+
+    // Handle image preview
+    function handleImage(file, preview) {
+      if (!file) return;
+      
+      // Check file type
+      if (!file.type.match('image.*') && file.type !== 'application/pdf') {
+        alert('Only JPG, PNG, and PDF files are allowed.');
+        return;
+      }
+      
+      // Check file size (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('File size must be under 5MB.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = e => {
+        if (file.type === 'application/pdf') {
+          // For PDFs, show a placeholder with PDF icon
+          preview.src = 'https://placehold.co/600x400/e2e8f0/64748b?text=PDF+Document';
+        } else {
+          preview.src = e.target.result;
+        }
+        preview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // View proof modal dynamic content
+    document.querySelectorAll('.view').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const customerName = this.closest('.payment-card').querySelector('.payment-info h3').textContent;
+        document.querySelector('#viewProofModal .modal-title').textContent = `Payment Proof - ${customerName}`;
+      });
+    });
+  </script>
+</body>
+</html>
