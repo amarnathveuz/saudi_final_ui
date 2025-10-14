@@ -194,17 +194,21 @@
 
   <!-- Main Content -->
   <main class="main-content">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2 class="fw-bold" style="color: var(--neutral-160); font-size: 18px!important;">Manage Subscription</h2>
-      <button style="background-color: #535353!important;border: none;" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#">
-        <a href="sub_logs.html" style="text-decoration: none;color: white;">Subscription Bookings</a>
-      </button>
-          <button style="background-color: #41c850!important;border: none;" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#">
-        <a href="sub_logs.html" style="text-decoration: none;color: white;">Membership Bookings</a>
-      </button>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#subscriptionModal">
-        <i class="bi bi-plus-lg me-1"></i> Add Subscription / Membership
-      </button>
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+  <h2 class="fw-bold" style="color: var(--neutral-160); font-size: 18px;">Manage Subscription</h2>
+
+  <div class="d-flex gap-2 flex-wrap">
+    <a href="sub_logs.html" class="btn btn-outline-secondary">
+      <i class="bi bi-receipt me-1"></i> Subscription Bookings
+    </a>
+    <a href="sub_logs.html" class="btn btn-outline-success">
+      <i class="bi bi-people me-1"></i> Membership Bookings
+    </a>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#subscriptionModal">
+      <i class="bi bi-plus-lg me-1"></i> Add Subscription / Membership
+    </button>
+  </div>
+</div>
     </div>
 
     <!-- Current Subscription Card -->
