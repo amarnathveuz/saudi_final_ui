@@ -32,7 +32,6 @@
     }
 
     body {
-    
       color: var(--neutral-140);
       font-family: 'Poppins', 'Segoe UI', system-ui, sans-serif;
       font-size: 14px;
@@ -63,7 +62,6 @@
       height: 48px;
       object-fit: cover;
       border-radius: 8px;
-     
     }
 
     .sidebar .nav-link {
@@ -389,6 +387,72 @@
       border-top: 4px solid var(--accent-red);
     }
 
+    /* Addon Activity Styles */
+    .addon-section {
+      background-color: rgba(59, 130, 246, 0.05);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .addon-section h5 {
+      margin-top: 0;
+      color: var(--accent-blue);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .payment-options {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .payment-option {
+      flex: 1;
+      text-align: center;
+      padding: 15px;
+      border: 2px solid var(--neutral-30);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .payment-option:hover {
+      border-color: var(--accent-blue);
+      background-color: rgba(59, 130, 246, 0.05);
+    }
+
+    .payment-option.selected {
+      border-color: var(--accent-blue);
+      background-color: rgba(59, 130, 246, 0.1);
+    }
+
+    .payment-option i {
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: var(--accent-blue);
+    }
+
+    .payment-option.unpaid i {
+      color: var(--accent-green);
+    }
+
+    .payment-option.paid i {
+      color: var(--accent-orange);
+    }
+
+    .amount-input {
+      display: none;
+      margin-top: 15px;
+    }
+
+    .amount-input.show {
+      display: block;
+    }
+
     /* Responsive */
     @media (max-width: 991px) {
       .sidebar { width: 220px; }
@@ -408,6 +472,9 @@
       .main-content { padding: 20px; }
       .activity-stats { flex-direction: column; gap: 12px; }
       .card-actions { justify-content: center; }
+      .payment-options {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -470,7 +537,7 @@
       <!-- Activity Card 1 -->
       <div class="activity-card">
         <div class="activity-image">
-          <img style="    width: 100%;" src="https://media.istockphoto.com/id/1369366561/photo/soccer-ball-in-flag-colors-on-a-bright-blurred-stadium-background-saudi-arabia.jpg?s=612x612&w=0&k=20&c=9EXbYf3bP3_HG1urEFooqUR6lqtHrHbceCsHtOilyoc=" alt="Football">
+          <img style="width: 100%;" src="https://media.istockphoto.com/id/1369366561/photo/soccer-ball-in-flag-colors-on-a-bright-blurred-stadium-background-saudi-arabia.jpg?s=612x612&w=0&k=20&c=9EXbYf3bP3_HG1urEFooqUR6lqtHrHbceCsHtOilyoc=" alt="Football">
           <div class="activity-badge">
             <i class="bi bi-check-circle-fill text-success me-1"></i> Active
           </div>
@@ -640,6 +707,41 @@
                     <option value="inactive">Inactive</option>
                   </select>
                 </div>
+                
+                <!-- Addon Activity Section -->
+                <div class="addon-section">
+                  <h5><i class="bi bi-patch-plus"></i> Addon Activity</h5>
+                  <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="addonActivity">
+                    <label class="form-check-label" for="addonActivity">
+                      This is an addon activity
+                    </label>
+                  </div>
+                  
+                  <div id="paymentOptions" class="d-none">
+                    <label class="form-label">Payment Type</label>
+                    <div class="payment-options">
+                      <div class="payment-option unpaid" data-value="unpaid">
+                        <i class="bi bi-gift"></i>
+                        <div>Unpaid</div>
+                        <small class="text-muted">Free for students</small>
+                      </div>
+                      <div class="payment-option paid" data-value="paid">
+                        <i class="bi bi-credit-card"></i>
+                        <div>Paid</div>
+                        <small class="text-muted">Requires payment</small>
+                      </div>
+                    </div>
+                    
+                    <div id="amountInput" class="amount-input">
+                      <label class="form-label">Amount (SAR)</label>
+                      <div class="input-group">
+                        <span class="input-group-text">SAR</span>
+                        <input type="number" class="form-control" placeholder="Enter amount" min="0" step="0.01">
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div class="col-lg-6">
@@ -693,6 +795,41 @@
                     <option value="active" selected>Active</option>
                     <option value="inactive">Inactive</option>
                   </select>
+                </div>
+                
+                <!-- Addon Activity Section -->
+                <div class="addon-section">
+                  <h5><i class="bi bi-patch-plus"></i> Addon Activity</h5>
+                  <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="editAddonActivity" checked>
+                    <label class="form-check-label" for="editAddonActivity">
+                      This is an addon activity
+                    </label>
+                  </div>
+                  
+                  <div id="editPaymentOptions">
+                    <label class="form-label">Payment Type</label>
+                    <div class="payment-options">
+                      <div class="payment-option unpaid" data-value="unpaid">
+                        <i class="bi bi-gift"></i>
+                        <div>Unpaid</div>
+                        <small class="text-muted">Free for students</small>
+                      </div>
+                      <div class="payment-option paid selected" data-value="paid">
+                        <i class="bi bi-credit-card"></i>
+                        <div>Paid</div>
+                        <small class="text-muted">Requires payment</small>
+                      </div>
+                    </div>
+                    
+                    <div id="editAmountInput" class="amount-input show">
+                      <label class="form-label">Amount (SAR)</label>
+                      <div class="input-group">
+                        <span class="input-group-text">SAR</span>
+                        <input type="number" class="form-control" value="150.00" min="0" step="0.01">
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -781,6 +918,46 @@
       };
       reader.readAsDataURL(file);
     }
+    
+    // Addon Activity Functionality
+    document.getElementById('addonActivity').addEventListener('change', function() {
+      const paymentOptions = document.getElementById('paymentOptions');
+      if (this.checked) {
+        paymentOptions.classList.remove('d-none');
+      } else {
+        paymentOptions.classList.add('d-none');
+        document.getElementById('amountInput').classList.remove('show');
+      }
+    });
+    
+    // Payment options selection
+    document.querySelectorAll('.payment-option').forEach(option => {
+      option.addEventListener('click', function() {
+        // Remove selected class from all options
+        this.parentElement.querySelectorAll('.payment-option').forEach(opt => {
+          opt.classList.remove('selected');
+        });
+        
+        // Add selected class to clicked option
+        this.classList.add('selected');
+        
+        // Show/hide amount input based on selection
+        const isPaid = this.dataset.value === 'paid';
+        const amountInput = this.closest('.modal-body').querySelector('.amount-input');
+        if (isPaid) {
+          amountInput.classList.add('show');
+        } else {
+          amountInput.classList.remove('show');
+        }
+      });
+    });
+    
+    // Initialize payment options in edit modal
+    document.querySelectorAll('#editPaymentOptions .payment-option').forEach(option => {
+      if (option.classList.contains('selected')) {
+        option.click();
+      }
+    });
   </script>
 </body>
 </html>
